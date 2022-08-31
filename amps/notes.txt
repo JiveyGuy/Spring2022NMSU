@@ -1,0 +1,22 @@
+Clock cycle time =  1/clock speed
+CPU Time = clock cycle time * cycles per instructions * num instructions
+exec time Cycle_t * CPI * instrs
+Perf = clock speed * IPC * intrs
+Speedup = new perf / old perf
+
+Infl. tech for each:
+	- Clock cycle time: Tech and pipeline
+	- CPI: Architecture and instr set design
+	- instructions count: instructions set design and compiler
+
+ (cycles per insstr) cannot be estimated analytically, invers of IPC (Instructions per cycle)
+
+Speedup is a ratio "This machine is 50% faster" = 
+
+Ex Q: My new comp has a IPC that 20% less old comp, clock speed 30% higher, what is speed up? 
+
+Sol: (new clck * new ipc) / (old clock * old ipc)
+
+Ex Q: Assume: each prog ran same t on each comp, IPC is how well a program can execute per cycle, 
+
+Harmonic mean? 
