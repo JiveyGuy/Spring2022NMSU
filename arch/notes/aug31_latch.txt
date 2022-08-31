@@ -1,0 +1,5 @@
+unpipelined = T + T_overhead
+N-stage pipeline time per stage = t/n + t_overhead
+total N-stage time = n(t/n+t_overhead)
+
+2(5/2+0.2)
