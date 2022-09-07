@@ -5,6 +5,8 @@
 
             Shaun Cooper
             January 2015
+
+            Editted by Jason Ivey 2022
  
          */
         int comment = 1;
@@ -36,10 +38,11 @@ int yylex();
 %%
 
 int yywrap(void)
-{ return 1;
+{ 
+  return 1;
 }
-
-main()
+// added int type
+int main()
 {
   yylex();
   

@@ -351,8 +351,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 5
-#define YY_END_OF_BUFFER 6
+#define YY_NUM_RULES 6
+#define YY_END_OF_BUFFER 7
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -362,7 +362,7 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[14] =
     {   0,
-        0,    0,    6,    4,    5,    4,    4,    4,    3,    2,
+        0,    0,    7,    5,    4,    5,    5,    5,    3,    2,
         0,    1,    0
     } ;
 
@@ -451,8 +451,9 @@ char *yytext;
             January 2015
          */
         int comment = 1;
-        int debug = 1;  /* prints out debug statements if desired */
-#line 456 "lex.yy.c"
+        int debug = 1;
+        int line_c = 1;  /* prints out debug statements if desired */
+#line 457 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -669,9 +670,9 @@ YY_DECL
 		}
 
 	{
-#line 13 "lab2remove.l"
+#line 14 "lab2remove.l"
 
-#line 675 "lex.yy.c"
+#line 676 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -730,39 +731,51 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 14 "lab2remove.l"
+#line 15 "lab2remove.l"
 yylex();
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 15 "lab2remove.l"
+#line 16 "lab2remove.l"
 {
-        if (comment && debug) fprintf(
-          stderr,
-          " >>>>>>>> line %d: Possible Nested comment <<<<<<<<<<\n");
+        if (comment && debug) 
+          fprintf(
+            stderr,
+            " >>>>>>>> line %d: Possible Nested comment <<<<<<<<<<\n",
+            line_c
+          );
 
         comment = 1;
 	    }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 23 "lab2remove.l"
+#line 27 "lab2remove.l"
 {
           if (!comment) printf("%s",yytext); /*print out if it is not in a comment */
   	  comment = 0;
 	}
 	YY_BREAK
 case 4:
+/* rule 4 can match eol */
 YY_RULE_SETUP
-#line 27 "lab2remove.l"
-{ if (!comment) printf("%s",yytext);}
+#line 31 "lab2remove.l"
+{
+          line_c++;
+          printf("\n");
+}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 29 "lab2remove.l"
+#line 35 "lab2remove.l"
+{ if (!comment)printf("%s",yytext);}
+	YY_BREAK
+case 6:
+YY_RULE_SETUP
+#line 37 "lab2remove.l"
 ECHO;
 	YY_BREAK
-#line 766 "lex.yy.c"
+#line 779 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1767,14 +1780,14 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 29 "lab2remove.l"
+#line 37 "lab2remove.l"
 
 
 int yywrap(void)
 { return 1;
 }
-
-main()
+// added int type
+int main()
 {
   yylex();
   
