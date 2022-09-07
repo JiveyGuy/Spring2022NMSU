@@ -6,21 +6,31 @@
             Shaun Cooper
             January 2015
 
-            Editted by Jason Ivey 2022
+            Editted by Jason Ivey 2022:
+            I added a line counter called "line_c" starting
+            at 1 because most text editors display line numbers
+            starting at 1.
+
+            Added a line counter to incriment using "++" when \n
+            is found.
+
+            Added int type to main so it wont give default return
+            type warning. 
+
  
          */
-        int comment = 1;
-        int debug = 1;
-        int line_c = 1;  /* prints out debug statements if desired */
+        int comment = 0; /* Made this so it is 0 until comment start is detected */ 
+        int debug = 1; /* prints out debug statements if desired */
+        int line_c = 1;  /* line counter */
 %%
 int yylex();
 "/*"	{
-        if (comment && debug) 
+        if (comment && debug) // made this so that this only print if db & prev comment
           fprintf(
             stderr,
             " >>>>>>>> line %d: Possible Nested comment <<<<<<<<<<\n",
             line_c
-          );
+          ); /* Adds line_c to fprintf */
 
         comment = 1;
 	    }
@@ -31,7 +41,8 @@ int yylex();
 	}
 "\n"    {
           line_c++;
-          printf("\n");
+          if( comment == 0)
+            printf("\n");
 }
 .       { if (!comment)printf("%s",yytext);}
 

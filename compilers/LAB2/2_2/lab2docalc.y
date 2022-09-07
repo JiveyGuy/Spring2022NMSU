@@ -76,8 +76,8 @@ expr	:	'(' expr ')'
 	|	expr '-' expr
 			{ $$ = $1 - $3; }
 	|	expr '+' expr
-			{ $$ = $1 + $3; 
-		expr '*' expr
+			{ $$ = $1 + $3; }
+	|	expr '*' expr
 			{ $$ = $1 * $3; }
 	|	expr '/' expr
 			{ $$ = $1 / $3; }
@@ -87,8 +87,7 @@ expr	:	'(' expr ')'
 			{ $$ = $1 & $3; }
 	|	expr '|' expr
 			{ $$ = $1 | $3; }
-	/* fixed by removing left expr */
-	|	'-' expr	%prec UMINUS
+	|	'-' expr	%prec UMINUS /* fixed by removing left expr */
 			{ $$ = -$2; }
 	|	VARIABLE
 		{ 
