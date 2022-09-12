@@ -11,9 +11,9 @@
 # all rule, default when running "make" in this dir
 all: lab3
 
-# lex gen rule
+# c compile and target
 lab3: symtable.c symtable.h
 	gcc -o lab3 symtable.c
 
-# run:
-# 	./lab2_1 < comment.tst
+run:
+	./lab3
