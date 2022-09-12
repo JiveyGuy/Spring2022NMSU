@@ -24,16 +24,26 @@
 
    problems  fix unary minus, fix parenthesis, add multiplication
    problems  make it so that verbose is on and off with an input argument instead of compiled in
+	
+	Editted by Jason Ivey, Sep 4, 2022:
+		Added mult, uminus, and fixed spelling. 
+		Fixed spacing issues. 
+		Added int type to main. 
+		Made debugsw external. 
+		Added int yylex(); to supress warnings. 
+		
+
 */
 
 
 	/* begin specs */
 #include <stdio.h>
 #include <ctype.h>
-
+int yylex(); // Added this to supress warn
 
 int regs[26];
-int base, debugsw;
+extern int debugsw;
+int base;
 
 void yyerror (s)  /* Called by yyparse on error */
      char *s;
@@ -54,6 +64,7 @@ void yyerror (s)  /* Called by yyparse on error */
 %left '&'
 %left '+' '-'
 %left '*' '/' '%'
+%left '(' ')'
 %left UMINUS
 
 
@@ -87,8 +98,8 @@ expr	:	'(' expr ')'
 			{ $$ = $1 & $3; }
 	|	expr '|' expr
 			{ $$ = $1 | $3; }
-	|	'-' expr	%prec UMINUS /* fixed by removing left expr */
-			{ $$ = -$2; }
+	|	'-' expr %prec UMINUS  /* fixed by removing left expr */
+			{ $$ = -1 * $2; }
 	|	VARIABLE
 		{ 
 			$$ = regs[$1];
@@ -106,7 +117,8 @@ expr	:	'(' expr ')'
 
 %%	/* end of rules, start of program */
 
-main()
+
+int main()
 { 
 	yyparse();
 }

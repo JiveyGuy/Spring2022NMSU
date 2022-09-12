@@ -8,10 +8,16 @@
 
     Shaun Cooper
     January 2015
-*/
-%{
 
-    int mydebug=1; //Change 0 before submit
+Editted by Jason Ivey, Sep 4, 2022:
+    Made debug = 0
+    added () to token list
+
+
+*/
+
+%{
+    int mydebug=0; //Change 0 before submit
     #include "y.tab.h"
 %}
 
@@ -41,7 +47,7 @@
         fprintf(stderr,"Whitespace found\n");
 }
 
-[=\()-+*/%&|] 	{
+[=\()-+*/%&|] 	{ /* added () */
     if (mydebug)
         fprintf(stderr,"return a token %c\n",*yytext);
 
@@ -56,6 +62,7 @@
 }
 
 %%
+
 
 int yywrap(void)
 { 
