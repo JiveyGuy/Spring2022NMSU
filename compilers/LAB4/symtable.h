@@ -1,20 +1,47 @@
+
+// ██╗      █████╗ ██████╗     ██╗  ██╗
+// ██║     ██╔══██╗██╔══██╗    ██║  ██║
+// ██║     ███████║██████╔╝    ███████║
+// ██║     ██╔══██║██╔══██╗    ╚════██║
+// ███████╗██║  ██║██████╔╝         ██║
+// ╚══════╝╚═╝  ╚═╝╚═════╝          ╚═╝
+                                    
+
+// Should main function be enabled?
 // #define MAIN 1
-// #define DEBUG 1	
+// Will debug be shown? 
+// #define DEBUG 1
 
+// Namespace header
 #ifndef SYMTABLE
-#define SYMTABLE
+	#define SYMTABLE
 
-struct SymbTab
-{
-	char *symbol;
-	int addr;
-	struct SymbTab *next;
-};
+	// Modified stuct to use symbol instead of label
+	struct SymbTab
+	{
+		char *symbol; // name of var
+		int addr; // addr of var
+		struct SymbTab *next; //pointer to next var symbtab node
+	};
 
-// ========= PROTOTYPES
-void debug(char s[]);
-void Insert(char s[], int addr);
-void Display();
-void Delete(char s[]);
-int Search(char s[]);
+	// ========= PROTOTYPES
+
+	// debug: takes in char array and prints if DEBUG defined
+	void debug(char s[]);
+
+	// returns the addr for a symbol,
+	// should never be called for non-existant s 
+	int fetch_addr(char s[]);
+
+	// Insert, takes in label and addr and inserts to table
+	void Insert(char s[], int addr);
+
+	// Simple print of everything in sym table
+	void Display();
+
+	// Delete : removes label from symbol table
+	void Delete(char s[]);
+
+	// Search returns if symbol exists
+	int Search(char s[]);
 #endif

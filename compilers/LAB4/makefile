@@ -15,10 +15,13 @@
 all: lab4
 
 # c compile and target
-lab4: lab4.l lab4.y symtable.c symtable.h 
-	lex lab4.l
+lab4: lab4.y lab4.l symtable.c symtable.h 
 	yacc -d lab4.y
-	gcc lex.yy.c symtable.c y.tab.c -o lab4
+	lex lab4.l
+	gcc y.tab.h y.tab.c lex.yy.c symtable.c -o lab4
 
 run:
 	./lab4
+
+clean:
+	rm lex.yy.c y.tab.c y.tab.h lab4 

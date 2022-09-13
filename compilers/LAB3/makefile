@@ -15,5 +15,9 @@ all: lab3
 lab3: symtable.c symtable.h
 	gcc -o lab3 symtable.c
 
+# run rule use "make run" to execute
 run:
 	./lab3
+
+clean:
+	rm lab3
