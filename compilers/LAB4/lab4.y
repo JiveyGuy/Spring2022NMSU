@@ -51,7 +51,7 @@
 #include <stdlib.h>
 #include "symtable.h"
 
-#define MAX_VARS 3
+#define MAX_VARS 26
 extern int debugsw;
 
 int yylex(); // Added this to supress warn
