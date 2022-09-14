@@ -1,6 +1,4 @@
 /*
-
-
 dP         .d888888   888888ba  d8888b. 
 88        d8'    88   88    `8b     `88 
 88        88aaaaa88a a88aaaa8P'  aaad8' 
@@ -19,10 +17,8 @@ Jason Ivey, Sep 22:
 		Removed modify method,
 		indented, 
 		moved i/o to main,
-		added comments,
-		
-
-
+		added comments
+		removed refs to label
 */
 
 // ========= INCLUDES
@@ -31,124 +27,129 @@ Jason Ivey, Sep 22:
 #include<malloc.h>
 #include<string.h>
 #include<stdlib.h>
+#include "symtable.h"
 
 // ========= GLOBALS
-int size=0; //Size of the linked list
 
-struct SymbTab
-{
-	char label[10],symbol[10];
-	int addr;
-	struct SymbTab *next;
-};
-
+// Size of the linked list
+int size=0;
 // Pointers to start and end nodes
 struct SymbTab *first, *last;
 
-
-// ========= PROTOTYPES
-void Insert();
-void Display();
-void Delete();
-int Search(char lab[]);
-
-
 // ========= FUNCTIONS
-// Main control function, called on execution
-void main()
-{
-	int op,y;
-	char la[10];
 
-	do
+//This removes main if MAIN not defined in header
+#ifdef MAIN 
+	// Main control function, called on execution
+	void main()
 	{
-		printf("\n\tSYMBOL TABLE IMPLEMENTATION\n");
-		printf("\n\t1.INSERT\n\t2.DISPLAY\n\t3.DELETE\n\t4.SEARCH\n\t6.END\n");
-		printf("\n\tEnter your option : ");
+		int op, y;
+		char la[10];
 
-		scanf("%d",&op);
-
-		switch(op)
+		do
 		{
-			case 1:
-				int n, addr;
-				char l[10], symbol[];
+			op = -1; //reset after every run so that bad input does not default to last option
 
-				printf("\n\tEnter the label : ");
-				scanf("%s",l);
+			printf("\n\tSYMBOL TABLE IMPLEMENTATION\n");
+			printf("\t\t1.INSERT\n\t\t2.DISPLAY\n\t\t3.DELETE\n\t\t4.SEARCH\n\t\t5.END\n");
+			printf("\n\tEnter your option : ");
 
-				n = Search(l);
+			scanf("%d",&op);
 
-				if(n==1)
-				{
-					printf(
-					"\n\tThe label exists already in the symbol table\n\tDuplicate can.t be inserted"
-					);
+			switch(op)
+			{
+				case 1:
+					int n, addr;
+					
+					char s[10];
 
-					break;
-				} //Breaks this case if the label is already taken
+					printf("\n\tEnter the symbol : ");
+					scanf("%s", s);
+
+					n = Search(s);
+
+					if(n==1)
+					{
+						printf(
+						"\n\tThe symbol exists already in the symbol table\n\tDuplicate can.t be inserted"
+						);
+
+						break;
+					} //Breaks this case if the symbol is already taken
+
+					printf("\n\tEnter the address : ");
+					scanf("%d",&addr);
+
+					Insert(s, addr); //todo test
+
+					printf("\n\tsymbol inserted\n");
+				break;
+
+				case 2:
+					Display();
+				break;
+
+				case 3:
+					int a;
+
+					printf("\n\tEnter the symbol to be deleted : ");
+					scanf("%s",s);
+
+					a=Search(s);
+
+					if(a==0){
+						printf("\n\tsymbol not found, delet aborted.\n");
+						break;
+					}
+
+					Delete(s); //call delete with symbol char array
+				break;
+
+				case 4: 
+					printf("\n\tEnter the symbol to be searched : ");
+					scanf("%s",la);
+
+					y=Search(la);
+
+					printf("\n\tSearch Result:");
+
+					if(y==1)
+						printf("\n\tThe symbol is present in the symbol table\n");
+					else
+						printf("\n\tThe symbol is not present in the symbol table\n");
+				break;
+
+				case 5:
+					exit(0);
+
+				// Handle bad input
+				default:
+					printf("\n\tUnrecognized input, select another option!");
+			}
+		} while(op < 6);
+
+	}  /* end of main */
+#endif
 
 
-				printf("\n\tEnter the symbol : ");
-				scanf("%s",&symbol);
-
-				printf("\n\tEnter the address : ");
-				scanf("%d",&addr);
-
-				Insert(l, symbol, addr); //todo test
-
-				printf("\n\tLabel inserted\n");
-			break;
-
-			case 2:
-				Display();
-			break;
-
-			case 3:
-				int a;
-
-				printf("\n\tEnter the label to be deleted : ");
-				scanf("%s",l);
-
-				a=Search(l);
-
-				if(a==0){
-					printf("\n\tLabel not found, delet aborted.\n");
-					break;
-				}
-
-				Delete(l); //call delete with label char array
-			break;
-
-			case 4:
-				printf("\n\tEnter the label to be searched : ");
-				scanf("%s",la);
-
-				y=Search(la);
-
-				printf("\n\tSearch Result:");
-
-				if(y==1)
-					printf("\n\tThe label is present in the symbol table\n");
-				else
-					printf("\n\tThe label is not present in the symbol table\n");
-			break;
-
-			case 6:
-				exit(0);
-		}
-	} while(op<6);
-
-}  /* end of main */
+void debug(char s[]){
+	#ifdef DEBUG		
+		printf("DEBUG:: %s\n",s);
+	#endif
+}
 
 // Insert new value into the list
-void Insert(char l[], char s[], int addr)
+void Insert(char s[], int addr)
 {
+	debug("Insert:: start.");
+	char *s_temp = strdup(s);
+
 	struct SymbTab *p;
 	p=malloc(sizeof(struct SymbTab));
+	debug("Insert:: malloc succ");
 
-	strcpy(p->label, l);
-	strcpy(p->symbol, s);
+	p->symbol = s_temp;
+	debug("Insert:: strcopy succ");
 
 	p->addr   = addr;
 	p->next   = NULL;
@@ -171,20 +172,26 @@ void Insert(char l[], char s[], int addr)
 // Show the values stored in the list
 void Display()
 {
+	debug("Display:: called.");
 	int i;
 	struct SymbTab *p;
 	p=first;
-	printf("\n\tLABEL\t\tSYMBOL\t\tADDRESS\n");
+	printf("\n\tSYMBOL\t\tADDRESS\n");
 
 	for(i=0;i<size;i++)
 	{
-		printf("\t%s\t\t%s\t\t%d\n",p->label,p->symbol,p->addr);
+		printf(
+			"\t%s\t\t%d\n",
+			p->symbol,
+			p->addr
+		);
+
 		p=p->next;
 	}
 }
 
-// Search for a given label in the linked list
-int Search(char lab[])
+// Search for a given symbol in the linked list
+int Search(char s[])
 {
 	int i,flag=0;
 	struct SymbTab *p;
@@ -192,7 +199,7 @@ int Search(char lab[])
 
 	for(i=0;i<size;i++)
 	{
-		if(strcmp(p->label,lab)==0)
+		if(strcmp(p->symbol,s)==0)
 			flag=1;
 
 		p=p->next;
@@ -200,30 +207,23 @@ int Search(char lab[])
 	return flag;
 }
 
-// Delete function : when given a label remove it from the list
-void Delete(char l[])
+// Delete function : when given a symbol remove it from the list
+void Delete(char s[])
 {
+	int a;
 	struct SymbTab *p,*q;
 	p=first;
-
-
-	if(strcmp(first->label,l)==0)
-		first=first->next;
-
-	else if(strcmp(last->label,l)==0)
+	a=Search(s);
+	if(a==0)
+		printf("\n\tLabel not found\n");
+	else
 	{
-		q=p->next;
-		while(strcmp(q->label,l)!=0)
-		{
-			p=p->next;
-			q=q->next;
-		}	if(strcmp(first->label,l)==0)
-		first=first->next;
-
-		else if(strcmp(last->label,l)==0)
+		if(strcmp(first->symbol,s)==0)
+			first=first->next;
+		else if(strcmp(last->symbol,s)==0)
 		{
 			q=p->next;
-			while(strcmp(q->label,l)!=0)
+			while(strcmp(q->symbol,s)!=0)
 			{
 				p=p->next;
 				q=q->next;
@@ -231,11 +231,10 @@ void Delete(char l[])
 			p->next=NULL;
 			last=p;
 		}
-
 		else
 		{
 			q=p->next;
-			while(strcmp(q->label,l)!=0)
+			while(strcmp(q->symbol,s)!=0)
 			{
 				p=p->next;
 				q=q->next;
@@ -243,25 +242,7 @@ void Delete(char l[])
 			p->next=q->next;
 		}
 		size--;
-
 		printf("\n\tAfter Deletion:\n");
 		Display();
-		p->next=NULL;
-		last=p;
 	}
-	else
-	{
-		q=p->next;
-		while(strcmp(q->label,l)!=0)
-		{
-			p=p->next;
-			q=q->next;
-		}
-		p->next=q->next;
-	}
-
-	size--;
-
-	printf("\n\tAfter Deletion:\n");
-	Display();
 }

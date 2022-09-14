@@ -1,4 +1,12 @@
-/*
+/* 
+    ██╗      █████╗ ██████╗     ██╗  ██╗
+    ██║     ██╔══██╗██╔══██╗    ██║  ██║
+    ██║     ███████║██████╔╝    ███████║
+    ██║     ██╔══██║██╔══██╗    ╚════██║
+    ███████╗██║  ██║██████╔╝         ██║
+    ╚══════╝╚═╝  ╚═╝╚═════╝          ╚═╝
+                                    
+
     Small LEX routine which returns two formal tokens
     (INTEGER and VARIABLE) along with single string 
     elements like '+'.
@@ -13,31 +21,36 @@ Editted by Jason Ivey, Sep 4, 2022:
     Made debug = 0
     added () to token list
 
-
+Editted by Jason Ivey, Sep 12, 2022:
+    added int rule
+    added ; to catchall
 */
 
 %{
-    int mydebug=0; //Change 0 before submit
+    int mydebug = 0; //Change 0 before submit
     #include "y.tab.h"
 %}
 
 
 %%
+int         {
+    return(T_INT);
+}
 
-[a-z]		{
+[a-z][a-z_0-9]*		{
     if (mydebug) 
-        fprintf(stderr,"Letter found\n"); 
+        fprintf(stderr, "Variable found\n"); 
     
-    yylval=*yytext-'a'; 
+    yylval.string = strdup(yytext); 
 
     return(VARIABLE);
 }
 
-[0-9][0-9]*	{
+\-?[0-9][0-9]*	{
     if (mydebug) 
         fprintf(stderr,"Digit found\n"); 
 
-    yylval = atoi((const char *)yytext); 
+    yylval.value = atoi((const char *)yytext); 
 
     return(INTEGER);
 }
@@ -47,7 +60,7 @@ Editted by Jason Ivey, Sep 4, 2022:
         fprintf(stderr,"Whitespace found\n");
 }
 
-[=()\-+*/%&|] 	{ /* added () */
+[;=()\-+*/%&|] 	{ /* added () */
     if (mydebug)
         fprintf(stderr,"return a token %c\n",*yytext);
 
