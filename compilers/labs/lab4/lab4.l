@@ -14,7 +14,7 @@
     This LEX definition is the companion to the docalc.y
     YACC routine which is a simple calculator
 
-    Shaun Cooper
+Author: Shaun Cooper
     January 2015
 
 Editted by Jason Ivey, Sep 4, 2022:
