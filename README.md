@@ -8,7 +8,7 @@ This is my github dir with my homework, notes, and labs from New Mexico State Un
 
 **New Mexico State University** (**NMSU** or **NM State**) is a [public](https://en.wikipedia.org/wiki/Public_university_system "Public university system") [land-grant](https://en.wikipedia.org/wiki/Land-grant_university "Land-grant university") [research university](https://en.wikipedia.org/wiki/Research_university "Research university") with its main campus in [Las Cruces, New Mexico](https://en.wikipedia.org/wiki/Las_Cruces,_New_Mexico "Las Cruces, New Mexico"), in the [United States](https://en.wikipedia.org/wiki/United_States "United States").<sup>[1]([New Mexico State University - Wikipedia](https://en.wikipedia.org/wiki/New_Mexico_State_University))</sup>
 
-<img src="file:///home/jivey/devel/github/Spring2022NMSU/general/nmsu.jpg" title="" alt="MarkText" data-align="center">
+<img src="./general/nmsu.jpg" title="" alt="MarkText" data-align="center">
 
 ## CLASSES
 
@@ -34,7 +34,7 @@ Goodluck and please leave comments on things I messed up so both you and I can l
 
 ## AUTHOR
 
-<img title="" src="file:///home/jivey/devel/github/Spring2022NMSU/general/me.jpg" alt="MarkText" width="122" data-align="center">
+<img title="" src="./general/me.jpg" alt="MarkText" width="122" data-align="center">
 
 Jason Ivey is a senior C.S. & E.E. student at New Mexico State University. He was a principal C++ developer for the Nano-Sat lab's first space mission and is currently helping design future missions involving embedded image processing.
 
