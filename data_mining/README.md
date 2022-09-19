@@ -6,7 +6,7 @@
 
 Office: Science Hall 171
 
-![](/home/jivey/.config/marktext/images/2022-09-18-21-20-02-image.png)
+![](https://computerscience.nmsu.edu/facultydirectory/_images/huiping-2019-sq-250x250.jpg)
 
 ## 3 Course description
 
