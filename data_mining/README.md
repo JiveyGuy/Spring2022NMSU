@@ -2,9 +2,11 @@
 
 ### Instructor:
 
- Dr. Huiping Cao Office: Science Hall 171
+ Dr. Huiping Cao
 
+Office: Science Hall 171
 
+![](/home/jivey/.config/marktext/images/2022-09-18-21-20-02-image.png)
 
 ## 3 Course description
 
@@ -23,7 +25,6 @@ d) Clustering: k-means, Hierarchical Clustering, Gaussian Mixture Models, DBSCAN
 e) Association Analysis: Apriori, FP-Growth, GSP
 f) Anomaly Detection: Distance-based Approaches, Density-based Approaches, Clustering-based Approaches
 
-
 ## 5 Course learning outcomes
 
 #### Upon completion of this course, the students are expected to:
@@ -40,9 +41,6 @@ f) Anomaly Detection: Distance-based Approaches, Density-based Approaches, Clust
 
 • Use data mining tools and libraries to analyze data in real applications.
 
-
 ## 7 Prerequisites
 
 • At least a C- in C S 272, or Consent of Instructor.
-
-
