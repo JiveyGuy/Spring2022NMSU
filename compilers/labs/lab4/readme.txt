@@ -16,6 +16,6 @@ This is a lab for the class cs370, specifically LAB4. In this lab, we combine th
 	> store address and variable name in a symbol table
 	> use address and variable name to reference this variable now
 
-Uage:
+Usage:
 	make
 	make run
