@@ -48,6 +48,7 @@ struct SymbTab *first, *last;
 		int op, y;
 		char la[10];
 
+		// main control loop for i/o
 		do
 		{
 			op = -1; //reset after every run so that bad input does not default to last option
@@ -60,7 +61,7 @@ struct SymbTab *first, *last;
 
 			switch(op)
 			{
-				case 1:
+				case 1: // INSERT
 					int n, addr;
 					
 					char s[10];
@@ -87,11 +88,11 @@ struct SymbTab *first, *last;
 					printf("\n\tsymbol inserted\n");
 				break;
 
-				case 2:
+				case 2: // DISPLAY
 					Display();
 				break;
 
-				case 3:
+				case 3: // SEARCH
 					int a;
 
 					printf("\n\tEnter the symbol to be deleted : ");
@@ -107,7 +108,7 @@ struct SymbTab *first, *last;
 					Delete(s); //call delete with symbol char array
 				break;
 
-				case 4: 
+				case 4: // DISPLAY
 					printf("\n\tEnter the symbol to be searched : ");
 					scanf("%s",la);
 
@@ -121,7 +122,7 @@ struct SymbTab *first, *last;
 						printf("\n\tThe symbol is not present in the symbol table\n");
 				break;
 
-				case 5:
+				case 5: // END
 					exit(0);
 
 				// Handle bad input
@@ -133,9 +134,11 @@ struct SymbTab *first, *last;
 	}  /* end of main */
 #endif
 
-// will return int addr for symbol
+// output: will return int addr 
+// input: symbol
 int fetch_addr(char s[]){
 
+	// is s does not exist in list
 	if(Search(s) == 0){
 		debug("fetch_addr:: barf due to undef char s[]");
 		exit(-1);
@@ -145,6 +148,7 @@ int fetch_addr(char s[]){
 	struct SymbTab *p;
 	p=first;
 
+	// this iterates the linked list until symbol == s (input symbol)
 	for(i=0; i<size; i++)
 	{
 		if(strcmp(p->symbol, s) == 0)
@@ -164,6 +168,8 @@ void debug(char s[]){
 }
 
 // Insert new value into the list
+// output: N/A
+// input: symbol: str, addr: int
 void Insert(char s[], int addr)
 {
 	debug("Insert:: start.");
@@ -179,12 +185,12 @@ void Insert(char s[], int addr)
 	p->addr   = addr;
 	p->next   = NULL;
 
-	if(size==0)
+	if(size==0) // empty list
 	{
 		first=p;
 		last=p;
 	}
-	else
+	else // non-empty list
 	{
 		last->next=p;
 		last=p;
@@ -195,6 +201,8 @@ void Insert(char s[], int addr)
 }
 
 // Show the values stored in the list
+// output: N/A
+// input: N/A
 void Display()
 {
 	debug("Display:: called.");
@@ -203,6 +211,7 @@ void Display()
 	p=first;
 	printf("\n\tSYMBOL\t\tADDRESS\n");
 
+	// iterate linked list to print addr and symbol
 	for(i=0;i<size;i++)
 	{
 		printf(
@@ -216,12 +225,15 @@ void Display()
 }
 
 // Search for a given symbol in the linked list
+// output: 0 => not found, 1 => found
+// input: s: str
 int Search(char s[])
 {
 	int i,flag=0;
 	struct SymbTab *p;
 	p=first;
 
+	// iterate list and set flag=1 if symbol found
 	for(i=0;i<size;i++)
 	{
 		if(strcmp(p->symbol,s)==0)
@@ -229,26 +241,31 @@ int Search(char s[])
 
 		p=p->next;
 	}
+
 	return flag;
 }
 
 // Delete function : when given a symbol remove it from the list
+// output: N/A
+// input: symbol: str
 void Delete(char s[])
 {
 	int a;
 	struct SymbTab *p,*q;
 	p=first;
 	a=Search(s);
+
+	// if symbol does not exist in list 
 	if(a==0)
 		printf("\n\tLabel not found\n");
-	else
+	else // if symbol does exist in list 
 	{
-		if(strcmp(first->symbol,s)==0)
+		if(strcmp(first->symbol,s)==0) // if first->symbol = input symbol
 			first=first->next;
-		else if(strcmp(last->symbol,s)==0)
+		else if(strcmp(last->symbol,s)==0) // if last->symbol = input symbol
 		{
 			q=p->next;
-			while(strcmp(q->symbol,s)!=0)
+			while(strcmp(q->symbol,s)!=0)  // iterate until symbol is gone
 			{
 				p=p->next;
 				q=q->next;
@@ -256,10 +273,10 @@ void Delete(char s[])
 			p->next=NULL;
 			last=p;
 		}
-		else
+		else // if neither symbol = input symbol
 		{
 			q=p->next;
-			while(strcmp(q->symbol,s)!=0)
+			while(strcmp(q->symbol,s)!=0) // iterate until symbol is gone
 			{
 				p=p->next;
 				q=q->next;

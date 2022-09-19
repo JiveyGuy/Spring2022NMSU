@@ -41,6 +41,9 @@
 	Editted by Jason Ivey, Sep 12, 2022:
 	    Made debug = 0
 	    added () to token list
+
+	INPUT: LEX Description + Text
+	OUTPUT: y.tab.c /h as well
 */
 
 
@@ -99,13 +102,13 @@ DECLS : DECLS DECL
 	| /* empty */
 	;
 
-DECL : T_INT VARIABLE ';' '\n' {
+DECL : T_INT VARIABLE ';' '\n' { 
 	fprintf(stderr, "Found a variable with the value %s\n", $2);
-	if( Search($2) == 1){
+	if( Search($2) == 1){ // if var name is already taken
 		fprintf(stderr, "ERROR: Vairable \"%s\" already exists! \n", $2);
 		fprintf(stderr, "\t VARIABLE T_INT \"%s\" not created.\n", $2 );
 	}
-	else if( regc >= MAX_VARS ){
+	else if( regc >= MAX_VARS ){ // if var exceeds max_vars
 		fprintf(stderr, "ERROR: number of vars too great, MAX_VARS = %d\n", MAX_VARS);
 		fprintf(stderr, "\t VARIABLE T_INT \"%s\" not created.\n", $2 );
 	}
@@ -163,7 +166,8 @@ expr	:	'(' expr ')'
 	|	'-' expr %prec UMINUS  /* fixed by removing left expr */
 			{ $$ = -1 * $2; }
 	|	VARIABLE
-		{ 
+		{
+			// Search did not find var name
 			if( Search($1) == 0){
 				fprintf(stderr, "ERROR: VARIABLE \"%s\" does not exists! \n", $1);
 				fprintf(stderr, "\t failed to get value of VARIABLE.\n");

@@ -19,9 +19,9 @@ lab4: lab4.y lab4.l symtable.c symtable.h
 	yacc -d lab4.y
 	lex lab4.l
 	gcc y.tab.h y.tab.c lex.yy.c symtable.c -o lab4
-
+# simple exec rule
 run:
 	./lab4
-
+# make the dir clena of generated code
 clean:
 	rm lex.yy.c y.tab.c y.tab.h lab4 

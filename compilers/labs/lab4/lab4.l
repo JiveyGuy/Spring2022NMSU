@@ -24,6 +24,16 @@ Editted by Jason Ivey, Sep 4, 2022:
 Editted by Jason Ivey, Sep 12, 2022:
     added int rule
     added ; to catchall
+
+input: text
+    assumptions: yacc will handle syntax error
+
+                 var names are letters numbers, 
+                    but don't start with numbers
+
+
+output: tokens
+
 */
 
 %{
