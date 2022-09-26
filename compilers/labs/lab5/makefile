@@ -14,13 +14,21 @@
 all: lab5
 
 # c compile and target
-lab4: lab5.y lab5.l symtable.c symtable.h 
-	yacc -d lab5.y
+lab5: lab5.y lab5.l
 	lex lab5.l
-	gcc y.tab.h y.tab.c lex.yy.c symtable.c -o lab5
+	yacc -d lab5.y
+	gcc lex.yy.c y.tab.c -o lab5
+
 # simple exec rule
 run:
-	./lab5
-# make the dir clena of generated code
+	./lab5 
+
+fail:
+	./lab5 < ErrorTest.decaf
+	
+good:
+	./lab5 < GoodTest.decaf
+
+# make the dir clean of generated code
 clean:
-	rm lex.yy.c y.tab.c y.tab.h lab5 
+	rm -f lex.yy.c y.tab.c y.tab.h lab5 

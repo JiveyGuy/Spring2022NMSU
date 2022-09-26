@@ -8,23 +8,7 @@
    \:\/___/\\:.\ \  \ \\::(_)  \ \    /_____\/ 
     \_____\/ \__\/\__\/ \_______\/    \_____/ 
 	                                    
-
-  			**** CALC ****
-  
-   This routine will function like a desk calculator
-   There are 26 integer registers, named 'a' thru 'z'
-  
-   This calculator depends on a LEX description which outputs either VARIABLE or INTEGER.
-   The return type via yylval is integer 
-
-   When we need to make yylval more complicated, we need to define a pointer type for yylval 
-   and to instruct YACC to use a new type so that we can pass back better values
- 
-   The registers are based on 0, so we substract 'a' from each single letter we get.
-
-   based on context, we have YACC do the correct memmory look up or the storage depending
-   on position
-
+ 			
    Shaun Cooper
     January 2015
 
@@ -42,149 +26,216 @@
 	    Made debug = 0
 	    added () to token list
 
+	Editted by Jason Ivey, Sep 25, 2022:
+	    removed old:
+	    	symbol table
+	    	rules
+	    	debugsw
+	    	base
+
+
 	INPUT: LEX Description + Text
-	OUTPUT: y.tab.c /h as well
+	OUTPUT: y.tab.c /h 
 */
 
-
-	/* begin specs */
+// begin specs 
 #include <stdio.h>
 #include <ctype.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include "symtable.h"
 
-#define MAX_VARS 2
-extern int debugsw;
+// Added this to supress warn
+extern int yylex(void);
 
-int yylex(); // Added this to supress warn
-
-int regs[MAX_VARS]; // probs make dynamic
-int regc = 0;
-int base;
-
-void yyerror (s)  /* Called by yyparse on error */
+// Called by yyparse on error 
+void yyerror (s, i)  
      char *s;
+     int i;
 {
-  printf ("%s\n", s);
+  printf ("At line %d ERROR: %s\n", s, i);
 }
 
-
 %}
-/*  defines the start symbol, what values come back from LEX and how the operators are associated  */
 
-%start P
+/*  
+ defines the start symbol, what values come back
+ from LEX and how the operators are associated 
+*/
+
+%start Program
 %union
 {
 	int value;
 	char* string;
 }
 
-%token <value>  INTEGER
-%token <string> VARIABLE
-%token T_INT
-
-%type <value> expr
-
-%left '|'
-%left '&'
-%left '+' '-'
-%left '*' '/' '%'
-%left '(' ')'
-%left UMINUS
+//===============TOKENS LIST
+%token T_AND            
+%token T_ASSIGN         
+%token T_BOOLTYPE       
+%token T_BREAK          
+%token T_CHARCONSTANT   
+%token T_CONTINUE       
+%token T_DOT            
+%token T_ELSE           
+%token T_EQ             
+%token T_EXTERN         
+%token T_FALSE          
+%token T_FOR            
+%token T_FUNC           
+%token T_GEQ            
+%token T_GT             
+%token T_ID             
+%token T_IF             
+%token T_INTCONSTANT    
+%token T_INTTYPE        
+%token T_LEFTSHT_IFT      
+%token T_LEQ            
+%token T_NEQ            
+%token T_NULL           
+%token T_OR             
+%token T_PACKAGE        
+%token T_RETURN         
+%token T_RIGHTSHT_IFT     
+%token T_STRINGCONSTANT 
+%token T_STRINGTYPE     
+%token T_TRUE           
+%token T_VAR            
+%token T_VOID           
+%token T_WHILE
+%token T_LEFTSHIFT 
+%token T_RIGHTSHIFT 
 
 %%	/* end specs, begin rules */
+Program             : Externs T_PACKAGE T_ID '{' FieldDecls MethodDecls '}' ;
+        
+Externs             : /*empty*/
+                    | ExternDefn Externs ;
+        
+ExternDefn          : T_EXTERN T_FUNC T_ID '(' ExternParmList ')' MethodType ';' ;
 
-P : DECLS list
-	;
+ExternParmList      : /*empty*/
+                    | FullExternParmList ;
 
-DECLS : DECLS DECL 
-	| /* empty */
-	;
+FullExternParmList  : ExternType
+                    | ExternType ',' ExternParmList ;
 
-DECL : T_INT VARIABLE ';' '\n' { 
-	fprintf(stderr, "Found a variable with the value %s\n", $2);
-	if( Search($2) == 1){ // if var name is already taken
-		fprintf(stderr, "ERROR: Vairable \"%s\" already exists! \n", $2);
-		fprintf(stderr, "\t VARIABLE T_INT \"%s\" not created.\n", $2 );
-	}
-	else if( regc >= MAX_VARS ){ // if var exceeds max_vars
-		fprintf(stderr, "ERROR: number of vars too great, MAX_VARS = %d\n", MAX_VARS);
-		fprintf(stderr, "\t VARIABLE T_INT \"%s\" not created.\n", $2 );
-	}
-	else
-	{
-		Insert($2, regc++);	
-	} 
-}
+FieldDecls          : /*empty*/
+                    | FieldDecl FieldDecls;
+        
+FieldDecl           : T_VAR T_ID Type ';' ;
+        
+FieldDecl           : T_VAR T_ID ArrayType ';' ;
+        
+FieldDecl           : T_VAR T_ID Type '=' Constant ';' ;
+        
+MethodDecls         : /*empty*/
+                    | MethodDecl MethodDecls ;
+        
+MethodDecl          : T_FUNC T_ID '(' MethodParmList ')' MethodType Block ;
 
-list	:	/* empty */
-	|	list stat '\n'
-	|	list error '\n'
-			{ 
-				yyerrok; 
-			}
-	;
+MethodParmList      : /*empty*/
+                    | FullMethodParmList ;
 
-stat	:	expr /* fixed spelling of awnser and spacing */
-			{ 
-				fprintf(stderr,"the awnser is %d\n", $1);					
-			}
+FullMethodParmList  : T_ID Type
+                    | T_ID Type ',' MethodParmList ;
+        
+Block               : '{' VarDecls Statements '}' ;
+        
+VarDecls            : /*empty*/
+                    | VarDecl VarDecls; ;
+        
+VarDecl             : T_VAR T_ID Type ';'
+										| T_VAR T_ID ArrayType ';' ;
+        
+Statements          : /*empty*/
+                    |  Statement Statements;
+        
+Statement           : Block ;
+        
+Statement           : Assign ';' ;
+        
+Assign              : Lvalue '=' Expr ;
+        
+Lvalue              : T_ID | T_ID '[' Expr ']' ;
+        
+Statement           : MethodCall ';' ;
+        
+MethodCall          : T_ID '(' MethodCallList ')' ;
 
-	|	VARIABLE '=' expr
-			{
-				// VARIABLE is a char* 
-				// 		Can't index array based on that
-				if( Search($1) == 0){
-					fprintf(stderr, "ERROR: VARIABLE \"%s\" does not exists! \n", $1);
-					fprintf(stderr, "\t failed to execute command.\n");
-					exit(-1);
-				}
-				else{
-					regs[fetch_addr($1)] = $3; 
-				}
-				
-			}
-	;
+MethodCallList      : /*empty*/
+                    | FullMethodCallList ;
 
-expr	:	'(' expr ')'
-			{ $$ = $2; }
-	|	expr '-' expr
-			{ $$ = $1 - $3; }
-	|	expr '+' expr
-			{ $$ = $1 + $3; }
-	|	expr '*' expr
-			{ $$ = $1 * $3; }
-	|	expr '/' expr
-			{ $$ = $1 / $3; }
-	|	expr '%' expr
-			{ $$ = $1 % $3; }
-	|	expr '&' expr
-			{ $$ = $1 & $3; }
-	|	expr '|' expr
-			{ $$ = $1 | $3; }
-	|	'-' expr %prec UMINUS  /* fixed by removing left expr */
-			{ $$ = -1 * $2; }
-	|	VARIABLE
-		{
-			// Search did not find var name
-			if( Search($1) == 0){
-				fprintf(stderr, "ERROR: VARIABLE \"%s\" does not exists! \n", $1);
-				fprintf(stderr, "\t failed to get value of VARIABLE.\n");
-				exit(-1);
-			}
-			else{
-				$$ = regs[fetch_addr($1)];
-				fprintf(stderr,"found a VARIABLE value = %s\n",$1); 
-			}
-		}
+FullMethodCallList  : MethodArg
+                    | MethodArg ',' MethodCallList ;
+        
+MethodArg           : Expr | T_STRINGCONSTANT ;
+        
+Statement           : T_IF '(' Expr ')' Block T_ELSE Expr;
 
-	|	INTEGER
-		{
-			$$=$1;
-			fprintf(stderr,"found an integer\n");
-		}
-	;
+Statement           : T_IF '(' Expr ')' Block;
+
+Statement           : T_WHILE '(' Expr ')' Block ;
+        
+Statement           : T_RETURN ';' ;
+										| T_RETURN '(' ')' ';' ;
+										| T_RETURN '(' Expr ')' ';' ;
+        
+Statement           : T_BREAK ';' ;
+        
+Statement           : T_CONTINUE ';' ;
+
+Expr                : Simpleexpression
+
+Simpleexpression    : Additiveexpression
+                    | Simpleexpression Relop Additiveexpression ;
+
+Relop               : T_LEQ
+                    | '<'
+                    | '>'
+                    | T_GEQ
+                    | T_EQ
+                    | T_NEQ ;
+
+Additiveexpression  : Term
+                    | Additiveexpression Addop Term;
+
+Addop               : '+'
+                    | '-' ;
+
+Term                : Factor
+                    | Term Multop Factor;
+
+Multop              : '*'
+                    | '/' 
+                    | T_AND
+                    | T_OR
+                    | T_LEFTSHT_IFT
+                    | T_RIGHTSHT_IFT ;
+
+Factor              : T_ID
+                    |  MethodCall
+                    | T_ID '[' Expr ']'
+                    | Constant
+                    | '(' Expr ')'
+                    | '!' Factor
+                    | '-' Factor ;
+
+ExternType          : T_STRINGTYPE 
+										| Type ;
+
+Type                : T_INTTYPE
+										| T_BOOLTYPE ;
+
+MethodType          : T_VOID
+										| Type ;
+
+BoolConstant        : T_TRUE
+										| T_FALSE ;
+
+ArrayType           : '[' T_INTCONSTANT ']' Type ;
+
+Constant            : T_INTCONSTANT 
+										| BoolConstant ;
+
 
 %%	/* end of rules, start of program */
 
