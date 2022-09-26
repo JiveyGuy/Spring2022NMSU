@@ -17,7 +17,7 @@ all: lab5
 lab5: lab5.y lab5.l
 	lex lab5.l
 	yacc -d lab5.y
-	gcc lex.yy.c y.tab.c -o lab5
+	gcc lex.yy.c y.tab.c -o lab5 -D__GNU_SOURCE
 
 # simple exec rule
 run:

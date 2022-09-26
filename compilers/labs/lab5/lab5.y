@@ -46,11 +46,10 @@
 extern int yylex(void);
 
 // Called by yyparse on error 
-void yyerror (s, i)  
+void yyerror (s)  
      char *s;
-     int i;
 {
-  printf ("At line %d ERROR: %s\n", s, i);
+  printf ("ERROR: %s\n", s);
 }
 
 %}

@@ -14,24 +14,23 @@
 all: lab6
 
 # c compile and target
-lab6: ./src/lib/ast.c
-	true 
-# 	lex lab6.l
-# 	yacc -d lab6.y
-# 	gcc lex.yy.c y.tab.c -o lab6
+lab6: ast.c ast.h
+	lex lab6.l
+	yacc -d lab6.y
+	gcc lex.yy.c y.tab.c -o lab6
 
 
 
-# # simple exec rule
-# run:
-# 	./lab6 
+# simple exec rule
+run:
+	./lab6 
 
-# fail:
-# 	./lab6 < ErrorTest.decaf
+fail:
+	./lab6 < ErrorTest.decaf
 	
-# good:
-# 	./lab6 < GoodTest.decaf
+good:
+	./lab6 < GoodTest.decaf
 
-# # make the dir clean of generated code
-# clean:
-# 	rm -f lex.yy.c y.tab.c y.tab.h lab6 
+# make the dir clean of generated code
+clean:
+	rm -f lex.yy.c y.tab.c y.tab.h lab6 

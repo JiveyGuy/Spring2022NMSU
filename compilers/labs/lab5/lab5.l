@@ -41,11 +41,16 @@ output: tokens
 */
 
 %{
-    
+    #define _GNU_SOURCE
+    #include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
     #include "y.tab.h"
+    #define MAX_DEBUG_MSG_SIZE 1000
     int line_num = 1;
     int DEBUG = 0; //Change 0 before submit
     int hex_to_int(char * hex_input);
+    int debug(char * msg, int line_count);
 %}
 
 
@@ -96,30 +101,20 @@ output: tokens
                 }
 
 [a-zA-Z][a-z_A-Z0-9]*    {
-                    if(DEBUG == 1)
-                    {
-                        fprintf(stderr, "DEBUG: Letter found.\n", line_num);
-                    
-                    }
+                    debug("T_ID found.", line_num);
                     yylval.string = strdup(yytext);
                     return T_ID;
                 }
 
 
 [0-9][0-9]*    {
-                    if(DEBUG == 1)
-                    {
-                        fprintf(stderr, "DEBUG: Digit found.\n", line_num);
-                    }
+                    debug("DEBUG: Digit found.\n", line_num);
                     yylval.value = atoi((char *)yytext);
                     return T_INTCONSTANT;
                 }
 
 0x[A-Z0-9][A-Z0-9]*    {
-                    if(DEBUG == 1)
-                    {
-                        fprintf(stderr,"DEBUG: Hex-Digit found.\n");
-                    }
+                    debug("DEBUG: Hex-Digit found.\n", line_num);
                     yylval.value = hex_to_int((char *)yytext);
                     return T_INTCONSTANT;
                 }
@@ -129,30 +124,17 @@ output: tokens
                 }
 
 [ \t]           {
-                    if(DEBUG == 1)
-                    {
-                        fprintf(stderr, "DEBUG: White space found.\n", line_num);
-                    }
+                    debug("DEBUG: White space found.\n", line_num);            
                 }
 
 [=()\[\]{}\-+*/%\!;,]    {
-                    if(DEBUG == 1)
-                    {
-                        fprintf(stderr, "DEBUG: Token found.\n", line_num);
-                    }
+                    debug("DEBUG: Token found.\n", line_num);
                     return (*yytext);
                 }
 
 \n    {
-                    if(DEBUG == 1)
-                    {
-                        fprintf(stderr, "DEBUG: newline token found.\n", line_num);
-                    }
+                    debug( "DEBUG: newline token found.\n", line_num);
                     line_num++;
-                    if(DEBUG == 1)
-                    {
-                        fprintf(stderr, "DEBUG: newline line_num incr.\n", line_num);
-                    }
                     return (*yytext);
       }
 
@@ -167,4 +149,14 @@ int yywrap(void)
 int hex_to_int(char * hex_input)
 {
   return (int)strtol(hex_input, NULL, 0);
+}
+
+int debug(char * msg, int line_count){
+    if(DEBUG == 1){
+        char* temp;
+        char debug_msg[MAX_DEBUG_MSG_SIZE];
+        asprintf(&temp, "At line: %d ", line_num);
+        strcat(strcpy(temp, msg), debug_msg);
+        fprintf(stderr, "%s", debug_msg);
+    }
 }

@@ -1,8 +1,9 @@
-/* A Bison parser, made by GNU Bison 3.0.4.  */
+/* A Bison parser, made by GNU Bison 3.8.2.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2021 Free Software Foundation,
+   Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -15,7 +16,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -30,6 +31,10 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
+/* DO NOT RELY ON FEATURES THAT ARE NOT DOCUMENTED in the manual,
+   especially those whose name start with YY_ or yy_.  They are
+   private implementation details that can be changed or removed.  */
+
 #ifndef YY_YY_Y_TAB_H_INCLUDED
 # define YY_YY_Y_TAB_H_INCLUDED
 /* Debug traces.  */
@@ -40,49 +45,58 @@
 extern int yydebug;
 #endif
 
-/* Token type.  */
+/* Token kinds.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
   enum yytokentype
   {
-    T_AND = 258,
-    T_ASSIGN = 259,
-    T_BOOLTYPE = 260,
-    T_BREAK = 261,
-    T_CHARCONSTANT = 262,
-    T_CONTINUE = 263,
-    T_DOT = 264,
-    T_ELSE = 265,
-    T_EQ = 266,
-    T_EXTERN = 267,
-    T_FALSE = 268,
-    T_FOR = 269,
-    T_FUNC = 270,
-    T_GEQ = 271,
-    T_GT = 272,
-    T_ID = 273,
-    T_IF = 274,
-    T_INTCONSTANT = 275,
-    T_INTTYPE = 276,
-    T_LEFTSHT_IFT = 277,
-    T_LEQ = 278,
-    T_NEQ = 279,
-    T_NULL = 280,
-    T_OR = 281,
-    T_PACKAGE = 282,
-    T_RETURN = 283,
-    T_RIGHTSHT_IFT = 284,
-    T_STRINGCONSTANT = 285,
-    T_STRINGTYPE = 286,
-    T_TRUE = 287,
-    T_VAR = 288,
-    T_VOID = 289,
-    T_WHILE = 290,
-    T_LEFTSHIFT = 291,
-    T_RIGHTSHIFT = 292
+    YYEMPTY = -2,
+    YYEOF = 0,                     /* "end of file"  */
+    YYerror = 256,                 /* error  */
+    YYUNDEF = 257,                 /* "invalid token"  */
+    T_AND = 258,                   /* T_AND  */
+    T_ASSIGN = 259,                /* T_ASSIGN  */
+    T_BOOLTYPE = 260,              /* T_BOOLTYPE  */
+    T_BREAK = 261,                 /* T_BREAK  */
+    T_CHARCONSTANT = 262,          /* T_CHARCONSTANT  */
+    T_CONTINUE = 263,              /* T_CONTINUE  */
+    T_DOT = 264,                   /* T_DOT  */
+    T_ELSE = 265,                  /* T_ELSE  */
+    T_EQ = 266,                    /* T_EQ  */
+    T_EXTERN = 267,                /* T_EXTERN  */
+    T_FALSE = 268,                 /* T_FALSE  */
+    T_FOR = 269,                   /* T_FOR  */
+    T_FUNC = 270,                  /* T_FUNC  */
+    T_GEQ = 271,                   /* T_GEQ  */
+    T_GT = 272,                    /* T_GT  */
+    T_ID = 273,                    /* T_ID  */
+    T_IF = 274,                    /* T_IF  */
+    T_INTCONSTANT = 275,           /* T_INTCONSTANT  */
+    T_INTTYPE = 276,               /* T_INTTYPE  */
+    T_LEFTSHT_IFT = 277,           /* T_LEFTSHT_IFT  */
+    T_LEQ = 278,                   /* T_LEQ  */
+    T_NEQ = 279,                   /* T_NEQ  */
+    T_NULL = 280,                  /* T_NULL  */
+    T_OR = 281,                    /* T_OR  */
+    T_PACKAGE = 282,               /* T_PACKAGE  */
+    T_RETURN = 283,                /* T_RETURN  */
+    T_RIGHTSHT_IFT = 284,          /* T_RIGHTSHT_IFT  */
+    T_STRINGCONSTANT = 285,        /* T_STRINGCONSTANT  */
+    T_STRINGTYPE = 286,            /* T_STRINGTYPE  */
+    T_TRUE = 287,                  /* T_TRUE  */
+    T_VAR = 288,                   /* T_VAR  */
+    T_VOID = 289,                  /* T_VOID  */
+    T_WHILE = 290,                 /* T_WHILE  */
+    T_LEFTSHIFT = 291,             /* T_LEFTSHIFT  */
+    T_RIGHTSHIFT = 292             /* T_RIGHTSHIFT  */
   };
+  typedef enum yytokentype yytoken_kind_t;
 #endif
-/* Tokens.  */
+/* Token kinds.  */
+#define YYEMPTY -2
+#define YYEOF 0
+#define YYerror 256
+#define YYUNDEF 257
 #define T_AND 258
 #define T_ASSIGN 259
 #define T_BOOLTYPE 260
@@ -121,17 +135,16 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-
 union YYSTYPE
 {
-#line 65 "lab5.y" /* yacc.c:1909  */
+#line 64 "lab5.y"
 
 	int value;
 	char* string;
 
-#line 133 "y.tab.h" /* yacc.c:1909  */
-};
+#line 146 "y.tab.h"
 
+};
 typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -140,6 +153,8 @@ typedef union YYSTYPE YYSTYPE;
 
 extern YYSTYPE yylval;
 
+
 int yyparse (void);
+
 
 #endif /* !YY_YY_Y_TAB_H_INCLUDED  */
