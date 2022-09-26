@@ -52,7 +52,7 @@ T_BREAK          { return 4;  } // break
 T_CHARCONSTANT   { return 5;  } // char_lit (see section on Character literals)
 T_CONTINUE       { return 6;  } // continue
 T_DOT            { return 7;  } // .
-T_ELSE           { return 8;  } // else`    
+T_ELSE           { return 8;  } // else`    g i t
 T_EQ             { return 9;  } // ==
 T_EXTERN         { return 10; } // extern
 T_FALSE          { return 11; } // false
