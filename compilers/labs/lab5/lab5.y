@@ -81,7 +81,8 @@ void yyerror (s)
 %token T_FOR            
 %token T_FUNC           
 %token T_GEQ            
-%token T_GT             
+%token T_GT 
+%token T_LT            
 %token T_ID             
 %token T_IF             
 %token T_INTCONSTANT    
@@ -124,7 +125,7 @@ FieldDecl           : T_VAR T_ID Type ';' ;
         
 FieldDecl           : T_VAR T_ID ArrayType ';' ;
         
-FieldDecl           : T_VAR T_ID Type '=' Constant ';' ;
+FieldDecl           : T_VAR T_ID Type  T_ASSIGN {fprintf(stderr, "passed assign\n");} Constant ';' ;
         
 MethodDecls         : /*empty*/
                     | MethodDecl MethodDecls ;
@@ -137,13 +138,13 @@ MethodParmList      : /*empty*/
 FullMethodParmList  : T_ID Type
                     | T_ID Type ',' MethodParmList ;
         
-Block               : '{' VarDecls Statements '}' ;
+Block               : {fprintf(stderr, "{ not worked. \n");} '{' {fprintf(stderr, "{ worked. \n");}VarDecls Statements '}' ;
         
 VarDecls            : /*empty*/
                     | VarDecl VarDecls; ;
         
 VarDecl             : T_VAR T_ID Type ';'
-										| T_VAR T_ID ArrayType ';' ;
+					| T_VAR T_ID ArrayType ';' ;
         
 Statements          : /*empty*/
                     |  Statement Statements;
@@ -152,9 +153,11 @@ Statement           : Block ;
         
 Statement           : Assign ';' ;
         
-Assign              : Lvalue '=' Expr ;
+Assign              : Lvalue T_ASSIGN Expr ; //trying: Lvalue '=' Expr ;
         
-Lvalue              : T_ID | T_ID '[' Expr ']' ;
+Lvalue              : T_ID
+                    | T_ID '[' Expr ']' ;
+                    //| T_ID Type; // tryign to fix
         
 Statement           : MethodCall ';' ;
         
@@ -166,30 +169,32 @@ MethodCallList      : /*empty*/
 FullMethodCallList  : MethodArg
                     | MethodArg ',' MethodCallList ;
         
-MethodArg           : Expr | T_STRINGCONSTANT ;
+MethodArg           : Expr
+                    | T_STRINGCONSTANT ;
         
-Statement           : T_IF '(' Expr ')' Block T_ELSE Expr;
+Statement           : T_IF '(' Expr ')' Block T_ELSE Block;
 
-Statement           : T_IF '(' Expr ')' Block;
+
+Statement           : T_IF '(' Expr  ')'  Block;
 
 Statement           : T_WHILE '(' Expr ')' Block ;
         
 Statement           : T_RETURN ';' ;
-										| T_RETURN '(' ')' ';' ;
-										| T_RETURN '(' Expr ')' ';' ;
+					| T_RETURN '(' ')' ';' ;
+					| T_RETURN '(' Expr ')' ';' ;
         
 Statement           : T_BREAK ';' ;
         
 Statement           : T_CONTINUE ';' ;
 
-Expr                : Simpleexpression
+Expr                : Simpleexpression ;
 
 Simpleexpression    : Additiveexpression
                     | Simpleexpression Relop Additiveexpression ;
 
 Relop               : T_LEQ
-                    | '<'
-                    | '>'
+                    | T_GT
+                    | T_LT
                     | T_GEQ
                     | T_EQ
                     | T_NEQ ;
@@ -204,14 +209,15 @@ Term                : Factor
                     | Term Multop Factor;
 
 Multop              : '*'
-                    | '/' 
+                    | '/'
+                    | '%' 
                     | T_AND
                     | T_OR
-                    | T_LEFTSHT_IFT
-                    | T_RIGHTSHT_IFT ;
+                    | T_LEFTSHIFT
+                    | T_RIGHTSHIFT ;
 
 Factor              : T_ID
-                    |  MethodCall
+                    | MethodCall
                     | T_ID '[' Expr ']'
                     | Constant
                     | '(' Expr ')'
@@ -219,21 +225,22 @@ Factor              : T_ID
                     | '-' Factor ;
 
 ExternType          : T_STRINGTYPE 
-										| Type ;
+					| Type ;
 
 Type                : T_INTTYPE
-										| T_BOOLTYPE ;
+					| T_BOOLTYPE ;
 
 MethodType          : T_VOID
-										| Type ;
+					| Type ;
 
 BoolConstant        : T_TRUE
-										| T_FALSE ;
+					| T_FALSE ;
 
 ArrayType           : '[' T_INTCONSTANT ']' Type ;
 
 Constant            : T_INTCONSTANT 
-										| BoolConstant ;
+					| BoolConstant
+                    | T_STRINGCONSTANT ;
 
 
 %%	/* end of rules, start of program */
