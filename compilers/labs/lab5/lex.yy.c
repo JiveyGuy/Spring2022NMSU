@@ -1155,14 +1155,15 @@ YY_RULE_SETUP
                     {
                         fprintf(stderr, "DEBUG: newline line_num incr.\n", line_num);
                     }
+                    return (*yytext);
       }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 158 "lab5.l"
+#line 159 "lab5.l"
 ECHO;
 	YY_BREAK
-#line 1165 "lex.yy.c"
+#line 1166 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2179,7 +2180,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 158 "lab5.l"
+#line 159 "lab5.l"
 
 
 int yywrap(void)
