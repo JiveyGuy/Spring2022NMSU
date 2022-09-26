@@ -33,6 +33,11 @@
 	    	debugsw
 	    	base
 
+  Editted by Jason Ivey, Sep 26, 2022:
+      fixed missing:
+        rules
+        tokens
+
 
 	INPUT: LEX Description + Text
 	OUTPUT: y.tab.c /h 
@@ -44,12 +49,13 @@
 
 // Added this to supress warn
 extern int yylex(void);
+extern int line_num; //for line_num in yyerror
 
 // Called by yyparse on error 
 void yyerror (s)  
      char *s;
 {
-  printf ("ERROR: %s\n", s);
+  printf ("ERROR @ line #%i: %s\n", line_num, s);
 }
 
 %}
@@ -125,7 +131,7 @@ FieldDecl           : T_VAR T_ID Type ';' ;
         
 FieldDecl           : T_VAR T_ID ArrayType ';' ;
         
-FieldDecl           : T_VAR T_ID Type  T_ASSIGN {fprintf(stderr, "passed assign\n");} Constant ';' ;
+FieldDecl           : T_VAR T_ID Type  T_ASSIGN Constant ';' ;
         
 MethodDecls         : /*empty*/
                     | MethodDecl MethodDecls ;
@@ -138,7 +144,7 @@ MethodParmList      : /*empty*/
 FullMethodParmList  : T_ID Type
                     | T_ID Type ',' MethodParmList ;
         
-Block               : {fprintf(stderr, "{ not worked. \n");} '{' {fprintf(stderr, "{ worked. \n");}VarDecls Statements '}' ;
+Block               : '{' VarDecls Statements '}' ;
         
 VarDecls            : /*empty*/
                     | VarDecl VarDecls; ;
@@ -153,11 +159,10 @@ Statement           : Block ;
         
 Statement           : Assign ';' ;
         
-Assign              : Lvalue T_ASSIGN Expr ; //trying: Lvalue '=' Expr ;
+Assign              : Lvalue T_ASSIGN Expr ; 
         
 Lvalue              : T_ID
                     | T_ID '[' Expr ']' ;
-                    //| T_ID Type; // tryign to fix
         
 Statement           : MethodCall ';' ;
         
@@ -179,9 +184,9 @@ Statement           : T_IF '(' Expr  ')'  Block;
 
 Statement           : T_WHILE '(' Expr ')' Block ;
         
-Statement           : T_RETURN ';' ;
-					| T_RETURN '(' ')' ';' ;
-					| T_RETURN '(' Expr ')' ';' ;
+Statement            : T_RETURN ';' ;
+					           | T_RETURN '(' ')' ';' ;
+					           | T_RETURN '(' Expr ')' ';' ;
         
 Statement           : T_BREAK ';' ;
         
@@ -225,22 +230,22 @@ Factor              : T_ID
                     | '-' Factor ;
 
 ExternType          : T_STRINGTYPE 
-					| Type ;
+					          | Type ;
 
-Type                : T_INTTYPE
-					| T_BOOLTYPE ;
+Type                 : T_INTTYPE
+					           | T_BOOLTYPE ;
 
-MethodType          : T_VOID
-					| Type ;
+MethodType           : T_VOID
+					           | Type ;
 
-BoolConstant        : T_TRUE
-					| T_FALSE ;
+BoolConstant         : T_TRUE
+					           | T_FALSE ;
 
-ArrayType           : '[' T_INTCONSTANT ']' Type ;
+ArrayType            : '[' T_INTCONSTANT ']' Type ;
 
-Constant            : T_INTCONSTANT 
-					| BoolConstant
-                    | T_STRINGCONSTANT ;
+Constant             : T_INTCONSTANT 
+					           | BoolConstant
+                     | T_STRINGCONSTANT ;
 
 
 %%	/* end of rules, start of program */

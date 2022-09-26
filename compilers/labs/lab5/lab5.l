@@ -43,9 +43,9 @@ output: tokens
 %{
     #include "y.tab.h"
     int line_num = 1;
-    int DEBUG = 1; //Change 0 before submit
-    int hex_to_int(char * hex_input);
-    int debug(char * msg, int line_count);
+    int DEBUG = 0; //Change 0 before submit
+    int hex_to_int(char * hex_input); // takes a hexidecimal string of the form 0xAAAA
+    int debug(char * msg, int line_count); // simplified debug behavior. 
 %}
 
 
@@ -268,7 +268,7 @@ output: tokens
 \n    {
                     debug( "DEBUG: newline token found.", line_num);
                     line_num++;
-                    //return (*yytext); //error here "syntax error"
+                    // return (*yytext); //error here "syntax error" (fixed be removing)
       }
 
 %%
