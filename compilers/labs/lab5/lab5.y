@@ -112,36 +112,36 @@ void yyerror (s)
 %%	/* end specs, begin rules */
 Program             : Externs T_PACKAGE T_ID '{' FieldDecls MethodDecls '}' ;
         
-//Externs             : /*empty*/
-//                    | ExternDefn Externs ;
+Externs             : /*empty*/
+                    | ExternDefn Externs ;
         
-//ExternDefn          : T_EXTERN T_FUNC T_ID '(' ExternParmList ')' MethodType ';' ;
+ExternDefn          : T_EXTERN T_FUNC T_ID '(' ExternParmList ')' MethodType ';' ;
 
-//ExternParmList      : /*empty*/
-//                    | FullExternParmList ;
+ExternParmList      : /*empty*/
+                    | FullExternParmList ;
 
-//FullExternParmList  : ExternType
-//                    | ExternType ',' ExternParmList ;
+FullExternParmList  : ExternType
+                    | ExternType ',' ExternParmList ;
 
-//FieldDecls          : /*empty*/
-//                    | FieldDecl FieldDecls;
+FieldDecls          : /*empty*/
+                    | FieldDecl FieldDecls;
         
-//FieldDecl           : T_VAR T_ID Type ';' ;
+FieldDecl           : T_VAR T_ID Type ';' ;
         
-//FieldDecl           : T_VAR T_ID ArrayType ';' ;
+FieldDecl           : T_VAR T_ID ArrayType ';' ;
         
-//FieldDecl           : T_VAR T_ID Type  T_ASSIGN Constant ';' ;
+FieldDecl           : T_VAR T_ID Type  T_ASSIGN Constant ';' ;
         
-//MethodDecls         : /*empty*/
-//                    | MethodDecl MethodDecls ;
+MethodDecls         : /*empty*/
+                    | MethodDecl MethodDecls ;
         
-//MethodDecl          : T_FUNC T_ID '(' MethodParmList ')' MethodType Block ;
+MethodDecl          : T_FUNC T_ID '(' MethodParmList ')' MethodType Block ;
 
-//MethodParmList      : /*empty*/
-//                    | FullMethodParmList ;
+MethodParmList      : /*empty*/
+                    | FullMethodParmList ;
 
-//FullMethodParmList  : T_ID Type
-//                    | T_ID Type ',' MethodParmList ;
+FullMethodParmList  : T_ID Type
+                    | T_ID Type ',' MethodParmList ;
         
 Block               : '{' VarDecls Statements '}' ;
         
