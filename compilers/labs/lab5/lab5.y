@@ -144,7 +144,8 @@ MethodParmList      : /*empty*/
 FullMethodParmList  : T_ID Type
                     | T_ID Type ',' MethodParmList ;
         
-Block               : '{' VarDecls Statements '}' ;
+Block               : '{' VarDecls '}' 
+                    | '{' VarDecls Statements'}' ;
         
 VarDecls            : /*empty*/
                     | VarDecl VarDecls; ;
@@ -152,8 +153,8 @@ VarDecls            : /*empty*/
 VarDecl             : T_VAR T_ID Type ';'
 					          | T_VAR T_ID ArrayType ';' ;
         
-Statements          : /*empty*/
-                    |  Statement Statements;
+Statements          : Statement
+                    | Statement Statements;
         
 Statement           : Block ;
         
