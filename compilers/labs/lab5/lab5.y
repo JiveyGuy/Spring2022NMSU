@@ -128,10 +128,8 @@ FieldDecls          : /*empty*/
                     | FieldDecl FieldDecls;
         
 FieldDecl           : T_VAR T_ID Type ';' ;
-        
-FieldDecl           : T_VAR T_ID ArrayType ';' ;
-        
-FieldDecl           : T_VAR T_ID Type  T_ASSIGN Constant ';' ;
+                    | T_VAR T_ID ArrayType ';' ;
+                    | T_VAR T_ID Type  T_ASSIGN Constant ';' ;
         
 MethodDecls         : /*empty*/
                     | MethodDecl MethodDecls ;
@@ -150,7 +148,7 @@ VarDecls            : /*empty*/
                     | VarDecl VarDecls; ;
         
 VarDecl             : T_VAR T_ID Type ';'
-					| T_VAR T_ID ArrayType ';' ;
+					          | T_VAR T_ID ArrayType ';' ;
         
 Statements          : /*empty*/
                     |  Statement Statements;
