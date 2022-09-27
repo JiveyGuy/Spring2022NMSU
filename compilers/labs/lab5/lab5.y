@@ -136,14 +136,12 @@ FieldDecl           : T_VAR T_ID Type ';' ;
 MethodDecls         : /*empty*/
                     | MethodDecl MethodDecls ;
         
-MethodDecl          : T_FUNC T_ID '(' MethodParmList ')' MethodType Block ;
+MethodDecl          : T_FUNC T_ID '(' MethodParmList ')' MethodType Block 
+                    | T_FUNC T_ID '(' ')' MethodType Block;
 
-MethodParmList      : /*empty*/
-                    | FullMethodParmList ;
-
-FullMethodParmList  : T_ID Type
+MethodParmList      : T_ID Type
                     | T_ID Type ',' MethodParmList ;
-        
+
 Block               : '{' VarDecls '}' 
                     | '{' VarDecls Statements'}' ;
         
