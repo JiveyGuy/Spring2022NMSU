@@ -242,7 +242,6 @@ Constant             : T_INTCONSTANT
 					           | BoolConstant
                      | T_STRINGCONSTANT ;
 
-
 %%	/* end of rules, start of program */
 
 int main()
