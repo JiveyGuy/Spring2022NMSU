@@ -36,7 +36,6 @@
   Editted by Jason Ivey, Sep 26, 2022:
       fixed missing:
         rules
-        tokens
 
 
 	INPUT: LEX Description + Text
@@ -49,7 +48,7 @@
 
 // Added this to supress warn
 extern int yylex(void);
-extern int line_num; //for line_num in yyerror
+extern int line_num; //counts lines
 
 // Called by yyparse on error 
 void yyerror (s)  
@@ -125,34 +124,35 @@ FullExternParmList  : ExternType
                     | ExternType ',' ExternParmList ;
 
 FieldDecls          : /*empty*/
-                    | FullFieldDecls;
-
-FullFieldDecls      : FieldDecl FieldDecls;
-
+                    | FieldDecl FieldDecls;
+        
 FieldDecl           : T_VAR T_ID Type ';' ;
-                    | T_VAR T_ID ArrayType ';' ;
-                    | T_VAR T_ID Type  T_ASSIGN Constant ';' ;
+        
+FieldDecl           : T_VAR T_ID ArrayType ';' ;
+        
+FieldDecl           : T_VAR T_ID Type  T_ASSIGN Constant ';' ;
         
 MethodDecls         : /*empty*/
                     | MethodDecl MethodDecls ;
         
-MethodDecl          : T_FUNC T_ID '(' MethodParmList ')' MethodType Block 
-                    | T_FUNC T_ID '(' ')' MethodType Block;
+MethodDecl          : T_FUNC T_ID '(' MethodParmList ')' MethodType Block ;
 
-MethodParmList      : T_ID Type
+MethodParmList      : /*empty*/
+                    | FullMethodParmList ;
+
+FullMethodParmList  : T_ID Type
                     | T_ID Type ',' MethodParmList ;
-
-Block               : '{' VarDecls '}' 
-                    | '{' VarDecls Statements'}' ;
+        
+Block               : '{' VarDecls Statements '}' ;
         
 VarDecls            : /*empty*/
                     | VarDecl VarDecls; ;
         
 VarDecl             : T_VAR T_ID Type ';'
-					          | T_VAR T_ID ArrayType ';' ;
+					| T_VAR T_ID ArrayType ';' ;
         
-Statements          : Statement
-                    | Statement Statements;
+Statements          : /*empty*/
+                    |  Statement Statements;
         
 Statement           : Block ;
         
@@ -165,10 +165,10 @@ Lvalue              : T_ID
         
 Statement           : MethodCall ';' ;
         
-MethodCall          : T_ID '(' MethodCallList ')' 
-                    | T_ID '(' ')';
+MethodCall          : T_ID '(' MethodCallList ')' ;
 
-MethodCallList      : FullMethodCallList ;
+MethodCallList      : /*empty*/
+                    | FullMethodCallList ;
 
 FullMethodCallList  : MethodArg
                     | MethodArg ',' MethodCallList ;
@@ -176,15 +176,20 @@ FullMethodCallList  : MethodArg
 MethodArg           : Expr
                     | T_STRINGCONSTANT ;
         
-//Statement           : T_IF '(' Expr ')' Block T_ELSE Block;
+Statement           : T_IF '(' Expr ')' Block T_ELSE Block;
 
-Statement            : T_IF '(' Expr  ')'  Block;
-                     | T_WHILE '(' Expr ')' Block ;
-                     | T_RETURN ';' ;
+
+Statement           : T_IF '(' Expr  ')'  Block;
+
+Statement           : T_WHILE '(' Expr ')' Block ;
+        
+Statement            : T_RETURN ';' ;
 					           | T_RETURN '(' ')' ';' ;
 					           | T_RETURN '(' Expr ')' ';' ;
-                     | T_BREAK ';' ;
-                     | T_CONTINUE ';' ;
+        
+Statement           : T_BREAK ';' ;
+        
+Statement           : T_CONTINUE ';' ;
 
 Expr                : Simpleexpression ;
 
