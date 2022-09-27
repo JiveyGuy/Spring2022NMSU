@@ -178,17 +178,13 @@ MethodArg           : Expr
         
 //Statement           : T_IF '(' Expr ')' Block T_ELSE Block;
 
-Statement           : T_IF '(' Expr  ')'  Block;
-
-Statement           : T_WHILE '(' Expr ')' Block ;
-        
-Statement            : T_RETURN ';' ;
+Statement            : T_IF '(' Expr  ')'  Block;
+                     | T_WHILE '(' Expr ')' Block ;
+                     | T_RETURN ';' ;
 					           | T_RETURN '(' ')' ';' ;
 					           | T_RETURN '(' Expr ')' ';' ;
-        
-Statement           : T_BREAK ';' ;
-        
-Statement           : T_CONTINUE ';' ;
+                     | T_BREAK ';' ;
+                     | T_CONTINUE ';' ;
 
 Expr                : Simpleexpression ;
 
