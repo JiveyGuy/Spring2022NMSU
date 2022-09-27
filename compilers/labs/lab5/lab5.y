@@ -166,10 +166,10 @@ Lvalue              : T_ID
         
 Statement           : MethodCall ';' ;
         
-MethodCall          : T_ID '(' MethodCallList ')' ;
+MethodCall          : T_ID '(' MethodCallList ')' 
+                    | T_ID '(' ')';
 
-MethodCallList      : /*empty*/
-                    | FullMethodCallList ;
+MethodCallList      : FullMethodCallList ;
 
 FullMethodCallList  : MethodArg
                     | MethodArg ',' MethodCallList ;
