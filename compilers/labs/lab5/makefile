@@ -15,7 +15,7 @@ all: lab5
 
 # c compile and target
 lab5: lab5.y lab5.l
-	yacc -d lab5.y -W none
+	yacc -d lab5.y --warnings=none
 	lex lab5.l
 	gcc lex.yy.c y.tab.c -o lab5
 
