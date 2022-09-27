@@ -110,7 +110,7 @@ void yyerror (s)
 %token T_RIGHTSHIFT 
 
 %%	/* end specs, begin rules */
-//Program             : Externs T_PACKAGE T_ID '{' FieldDecls MethodDecls '}' ;
+Program             : Externs T_PACKAGE T_ID '{' FieldDecls MethodDecls '}' ;
         
 //Externs             : /*empty*/
 //                    | ExternDefn Externs ;
@@ -140,8 +140,8 @@ void yyerror (s)
 //MethodParmList      : /*empty*/
 //                    | FullMethodParmList ;
 
-FullMethodParmList  : T_ID Type
-                    | T_ID Type ',' MethodParmList ;
+//FullMethodParmList  : T_ID Type
+//                    | T_ID Type ',' MethodParmList ;
         
 Block               : '{' VarDecls Statements '}' ;
         
