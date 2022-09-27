@@ -29,6 +29,7 @@ fail:
 	./lab5 < ErrorTest2.decaf
 	./lab5 < ErrorTest3.decaf
 	./lab5 < ErrorTest4.decaf
+	./lab5 < ErrorTest4.decaf
 	
 good:
 	./lab5 < GoodTest.decaf
