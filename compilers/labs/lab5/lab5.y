@@ -125,7 +125,10 @@ FullExternParmList  : ExternType
                     | ExternType ',' ExternParmList ;
 
 FieldDecls          : /*empty*/
-                    | FieldDecl FieldDecls;
+                    | FullFieldDecls;
+
+FullFieldDecls      : FieldDecl
+                    | FieldDecl FieldDecls ;
         
 FieldDecl           : T_VAR T_ID Type ';' ;
                     | T_VAR T_ID ArrayType ';' ;
