@@ -176,12 +176,11 @@ FullMethodCallList  : MethodArg
 MethodArg           : Expr
                     | T_STRINGCONSTANT ;
         
-Statement           : T_IF '(' Expr ')' Block T_ELSE Block;
+//Statement           : T_IF '(' Expr ')' Block T_ELSE Block;
 
+Statement           : T_IF '(' Expr  ')'  Block;
 
-//Statement           : T_IF '(' Expr  ')'  Block;
-
-//Statement           : T_WHILE '(' Expr ')' Block ;
+Statement           : T_WHILE '(' Expr ')' Block ;
         
 Statement            : T_RETURN ';' ;
 					           | T_RETURN '(' ')' ';' ;
