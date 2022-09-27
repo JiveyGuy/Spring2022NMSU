@@ -152,7 +152,7 @@ VarDecl             : T_VAR T_ID Type ';'
 					          | T_VAR T_ID ArrayType ';' ;
         
 Statements          : /*empty*/
-                    |  Statement Statements;
+                    | Statement Statements;
         
 Statement           : Block ;
         
