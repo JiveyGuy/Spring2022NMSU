@@ -149,7 +149,7 @@ VarDecls            : /*empty*/
                     | VarDecl VarDecls; ;
         
 VarDecl             : T_VAR T_ID Type ';'
-					| T_VAR T_ID ArrayType ';' ;
+					          | T_VAR T_ID ArrayType ';' ;
         
 Statements          : /*empty*/
                     |  Statement Statements;
@@ -178,8 +178,7 @@ MethodArg           : Expr
         
 Statement           : T_IF '(' Expr ')' Block T_ELSE Block;
 
-
-Statement           : T_IF '(' Expr  ')'  Block;
+Statement           : T_IF '(' Expr  ')' Block;
 
 Statement           : T_WHILE '(' Expr ')' Block ;
         
@@ -220,7 +219,7 @@ Multop              : '*'
                     | T_LEFTSHIFT
                     | T_RIGHTSHIFT ;
 
-Factor              : T_ID
+Factor              : Lvalue
                     | MethodCall
                     | T_ID '[' Expr ']'
                     | Constant
