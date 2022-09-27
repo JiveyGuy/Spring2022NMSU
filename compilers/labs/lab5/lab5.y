@@ -221,7 +221,6 @@ Multop              : '*'
 
 Factor              : Lvalue
                     | MethodCall
-                    | T_ID '[' Expr ']'
                     | Constant
                     | '(' Expr ')'
                     | '!' Factor
