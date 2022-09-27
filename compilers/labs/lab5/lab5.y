@@ -190,9 +190,7 @@ Statement           : T_BREAK ';' ;
         
 Statement           : T_CONTINUE ';' ;
 
-Expr                : Simpleexpression ;
-
-Simpleexpression    : Additiveexpression
+Expr                : Additiveexpression
                     | Simpleexpression Relop Additiveexpression ;
 
 Relop               : T_LEQ
