@@ -258,7 +258,7 @@ output: tokens
                     debug("DEBUG: White space found.", line_num);            
                 }
 
-[=\(\)\[\]{}\-+*/\%\!;,]    {
+[\(\)\[\]{}\-+*/\%\!;,]    {
                     debug("DEBUG: Token found.", line_num);
                     return (*yytext);
                 }
