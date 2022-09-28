@@ -171,7 +171,7 @@ MethodCallList      : /*empty*/
                     | FullMethodCallList ;
 
 FullMethodCallList  : MethodArg
-                    | MethodArg ',' MethodCallList ;
+                    | MethodArg ',' FullMethodCallList ;
         
 MethodArg           : Expr
                     | T_STRINGCONSTANT ;

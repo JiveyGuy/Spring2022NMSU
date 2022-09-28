@@ -31,9 +31,7 @@ Editted by Jason Ivey, Sep 25, 2022:
 
 input: text
     assumptions: yacc will handle syntax error
-
-                 var names are letters numbers, 
-                    but don't start with numbers
+        line_num will not int overflow for given code sizes.
 
 
 output: tokens
@@ -284,6 +282,9 @@ int hex_to_int(char * hex_input)
   return (int)strtol(hex_input, NULL, 0);
 }
 
+// Debug handling method. 
+// input: str msg, line count
+// output: stdio
 int debug(char * msg, int line_count){
     if(DEBUG == 1){
         fprintf(stderr, "At line[%d]: %s\n", line_num, msg);

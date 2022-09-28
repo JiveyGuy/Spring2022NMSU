@@ -14,9 +14,11 @@ This is a lab for the class cs370, specifically LAB5.
 
 Our task is to create YACC and LEX routines which will PARSE (check syntax only) input that matches the language definition (read this is that your program should be able to take syntactically  correct code and say yes, otherwise report errors giving at least the first line number).   You need to turn off the verbose debug output when showing functionality.
 
-	> 
+	> Use make to test for errors and functionality. 
 
 Usage:
 	make
 	make run
+	make good
+	make fail
 	make clean
