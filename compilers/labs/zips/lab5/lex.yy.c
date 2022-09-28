@@ -593,20 +593,22 @@ Editted by Jason Ivey, Sep 25, 2022:
 
 input: text
     assumptions: yacc will handle syntax error
-        line_num will not int overflow for given code sizes.
+
+                 var names are letters numbers, 
+                    but don't start with numbers
 
 
 output: tokens
 
 */
-#line 42 "lab5.l"
+#line 44 "lab5.l"
     #include "y.tab.h"
     int line_num = 1;
     int DEBUG = 0; //Change 0 before submit
     int hex_to_int(char * hex_input); // takes a hexidecimal string of the form 0xAAAA
     int debug(char * msg, int line_count); // simplified debug behavior. 
-#line 608 "lex.yy.c"
-#line 609 "lex.yy.c"
+#line 610 "lex.yy.c"
+#line 611 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -823,10 +825,10 @@ YY_DECL
 		}
 
 	{
-#line 50 "lab5.l"
+#line 52 "lab5.l"
 
 
-#line 829 "lex.yy.c"
+#line 831 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -895,7 +897,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 52 "lab5.l"
+#line 54 "lab5.l"
 {
                     debug("DEBUG: T_ID found.", line_num);
                     return T_AND;
@@ -903,7 +905,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 56 "lab5.l"
+#line 58 "lab5.l"
 {
                     debug("DEBUG: T_ASSIGN found.", line_num);
                     return T_ASSIGN;        
@@ -911,7 +913,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 60 "lab5.l"
+#line 62 "lab5.l"
 {
                     debug("DEBUG: T_BOOLTYPE found.", line_num);
                     return T_BOOLTYPE;      
@@ -919,7 +921,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 65 "lab5.l"
+#line 67 "lab5.l"
 {
                     debug("DEBUG: T_BREAK found.", line_num);
                     return T_BREAK;         
@@ -927,7 +929,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 70 "lab5.l"
+#line 72 "lab5.l"
 {
                     debug("DEBUG: T_CHARCONSTANT found.", line_num);
                     return T_CHARCONSTANT;  
@@ -935,7 +937,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 75 "lab5.l"
+#line 77 "lab5.l"
 {
                     debug("DEBUG: T_CONTINUE found.", line_num);
                     return T_CONTINUE;      
@@ -943,7 +945,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 80 "lab5.l"
+#line 82 "lab5.l"
 {
                     debug("DEBUG: T_DOT found.", line_num);
                     return T_DOT;           
@@ -951,7 +953,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 85 "lab5.l"
+#line 87 "lab5.l"
 {
                     debug("DEBUG: T_ELSE found.", line_num);
                     return T_ELSE;          
@@ -959,7 +961,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 90 "lab5.l"
+#line 92 "lab5.l"
 {
                     debug("DEBUG: T_EQ found.", line_num);
                     return T_EQ;            
@@ -967,7 +969,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 95 "lab5.l"
+#line 97 "lab5.l"
 {
                     debug("DEBUG: T_EXTERN found.", line_num);
                     return T_EXTERN;        
@@ -975,7 +977,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 100 "lab5.l"
+#line 102 "lab5.l"
 {
                     debug("DEBUG: T_FALSE found.", line_num);
                     return T_FALSE;         
@@ -983,7 +985,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 105 "lab5.l"
+#line 107 "lab5.l"
 {
                     debug("DEBUG: T_FOR found.", line_num);
                     return T_FOR;           
@@ -991,7 +993,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 110 "lab5.l"
+#line 112 "lab5.l"
 {
                     debug("DEBUG: T_FUNC found.", line_num);
                     return T_FUNC;          
@@ -999,7 +1001,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 115 "lab5.l"
+#line 117 "lab5.l"
 {
                     debug("DEBUG: T_GEQ found.", line_num);
                     return T_GEQ;           
@@ -1007,7 +1009,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 120 "lab5.l"
+#line 122 "lab5.l"
 {
                     debug("DEBUG: T_GT found.", line_num);
                     return T_GT;            
@@ -1015,7 +1017,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 125 "lab5.l"
+#line 127 "lab5.l"
 {
                     debug("DEBUG: T_GT found.", line_num);
                     return T_LT;            
@@ -1023,7 +1025,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 130 "lab5.l"
+#line 132 "lab5.l"
 {
                     debug("DEBUG: T_ID found.", line_num);
                     return T_ID;            
@@ -1031,7 +1033,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 135 "lab5.l"
+#line 137 "lab5.l"
 {
                     debug("DEBUG: T_IF found.", line_num);
                     return T_IF;            
@@ -1039,7 +1041,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 140 "lab5.l"
+#line 142 "lab5.l"
 {
                     debug("DEBUG: T_INTCONSTANT found.", line_num);
                     return T_INTCONSTANT;   
@@ -1047,7 +1049,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 145 "lab5.l"
+#line 147 "lab5.l"
 {
                     debug("DEBUG: T_INTTYPE found.", line_num);
                     return T_INTTYPE;       
@@ -1055,7 +1057,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 150 "lab5.l"
+#line 152 "lab5.l"
 {
                     debug("DEBUG: T_LEFTSHIFT found.", line_num);
                     return T_LEFTSHIFT;     
@@ -1063,7 +1065,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 155 "lab5.l"
+#line 157 "lab5.l"
 {
                     debug("DEBUG: T_LEQ found.", line_num);
                     return T_LEQ;           
@@ -1071,7 +1073,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 160 "lab5.l"
+#line 162 "lab5.l"
 {
                     debug("DEBUG: T_NEQ found.", line_num);
                     return T_NEQ;           
@@ -1079,7 +1081,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 165 "lab5.l"
+#line 167 "lab5.l"
 {
                     debug("DEBUG: T_NULL found.", line_num);
                     return T_NULL;          
@@ -1087,7 +1089,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 170 "lab5.l"
+#line 172 "lab5.l"
 {
                     debug("DEBUG: T_OR found.", line_num);
                     return T_OR;            
@@ -1095,7 +1097,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 175 "lab5.l"
+#line 177 "lab5.l"
 {
                     debug("DEBUG: T_PACKAGE found.", line_num);
                     return T_PACKAGE;       
@@ -1103,7 +1105,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 180 "lab5.l"
+#line 182 "lab5.l"
 {
                     debug("DEBUG: T_RETURN found.", line_num);
                     return T_RETURN;        
@@ -1111,7 +1113,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 185 "lab5.l"
+#line 187 "lab5.l"
 {
                     debug("DEBUG: T_RIGHTSHIFT found.", line_num);
                     return T_RIGHTSHIFT;    
@@ -1119,7 +1121,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 190 "lab5.l"
+#line 192 "lab5.l"
 {
                     debug("DEBUG: T_STRINGCONSTANT found.", line_num);
                     return T_STRINGCONSTANT;
@@ -1127,7 +1129,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 195 "lab5.l"
+#line 197 "lab5.l"
 {
                     debug("DEBUG: T_STRINGTYPE found.", line_num);
                     return T_STRINGTYPE;    
@@ -1135,7 +1137,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 200 "lab5.l"
+#line 202 "lab5.l"
 {
                     debug("DEBUG: T_TRUE found.", line_num);
                     return T_TRUE;          
@@ -1143,7 +1145,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 205 "lab5.l"
+#line 207 "lab5.l"
 {
                     debug("DEBUG: T_VAR found.", line_num);
                     return T_VAR;           
@@ -1151,7 +1153,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 210 "lab5.l"
+#line 212 "lab5.l"
 {
                     debug("DEBUG: T_VOID found.", line_num);
                     return T_VOID;          
@@ -1159,7 +1161,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 215 "lab5.l"
+#line 217 "lab5.l"
 {
                     debug("DEBUG: T_WHILE found.", line_num);
                     return T_WHILE;         
@@ -1167,7 +1169,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 221 "lab5.l"
+#line 223 "lab5.l"
 {
                     debug("DEBUG: T_CHARCONSTANT found.", line_num);
                     yylval.value = yytext[1];
@@ -1176,7 +1178,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 227 "lab5.l"
+#line 229 "lab5.l"
 {
                     debug("DEBUG: T_STRINGCONSTANT found.", line_num);
                     yylval.value = yytext[1];
@@ -1185,7 +1187,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 233 "lab5.l"
+#line 235 "lab5.l"
 {
                     debug("DEBUG: T_ID found.", line_num);
                     yylval.string = strdup(yytext);
@@ -1194,7 +1196,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 240 "lab5.l"
+#line 242 "lab5.l"
 {
                     debug("DEBUG: Digit found.", line_num);
                     yylval.value = atoi((char *)yytext);
@@ -1203,7 +1205,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 246 "lab5.l"
+#line 248 "lab5.l"
 {
                     debug("DEBUG: Hex-Digit found.", line_num);
                     yylval.value = hex_to_int((char *)yytext);
@@ -1212,7 +1214,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 252 "lab5.l"
+#line 254 "lab5.l"
 { 
                     debug("DEBUG: comment line found.", line_num);
                     /* comment line for double slash Return nothing, keep going */
@@ -1220,14 +1222,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 257 "lab5.l"
+#line 259 "lab5.l"
 {
                     debug("DEBUG: White space found.", line_num);            
                 }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 261 "lab5.l"
+#line 263 "lab5.l"
 {
                     debug("DEBUG: Token found.", line_num);
                     return (*yytext);
@@ -1236,7 +1238,7 @@ YY_RULE_SETUP
 case 43:
 /* rule 43 can match eol */
 YY_RULE_SETUP
-#line 266 "lab5.l"
+#line 268 "lab5.l"
 {
                     debug( "DEBUG: newline token found.", line_num);
                     line_num++;
@@ -1245,10 +1247,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 272 "lab5.l"
+#line 274 "lab5.l"
 ECHO;
 	YY_BREAK
-#line 1251 "lex.yy.c"
+#line 1253 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2265,7 +2267,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 272 "lab5.l"
+#line 274 "lab5.l"
 
 
 int yywrap(void)
@@ -2279,9 +2281,6 @@ int hex_to_int(char * hex_input)
   return (int)strtol(hex_input, NULL, 0);
 }
 
-// Debug handling method. 
-// input: str msg, line count
-// output: stdio
 int debug(char * msg, int line_count){
     if(DEBUG == 1){
         fprintf(stderr, "At line[%d]: %s\n", line_num, msg);
