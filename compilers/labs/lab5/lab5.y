@@ -141,7 +141,7 @@ MethodParmList      : /*empty*/
                     | FullMethodParmList ;
 
 FullMethodParmList  : T_ID Type
-                    | T_ID Type ',' MethodParmList ;
+                    | T_ID Type ',' FullMethodParmList ;
         
 Block               : '{' VarDecls Statements '}' ;
         
