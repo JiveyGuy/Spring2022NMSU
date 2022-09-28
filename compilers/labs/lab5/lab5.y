@@ -146,7 +146,7 @@ FullMethodParmList  : T_ID Type
 Block               : '{' VarDecls Statements '}' ;
         
 VarDecls            : /*empty*/
-                    | VarDecl VarDecls; ;
+                    | VarDecl VarDecls ;
         
 VarDecl             : T_VAR T_ID Type ';'
 					          | T_VAR T_ID ArrayType ';' ;
