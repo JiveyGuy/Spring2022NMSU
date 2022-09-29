@@ -9,6 +9,10 @@
     non-terminal and terminal in our language.
 
     Shaun Cooper February 2020
+
+    Editted by Jason Ivey September 2022:
+      formatting
+  
 */
 
 #include<stdio.h>
@@ -157,7 +161,8 @@ void ASTprint(int level,ASTnode *p)
         printf("\n");                  
       break;
 
-      case A_EXPR :  printf("EXPR ");
+      case A_EXPR :
+        printf("EXPR ");
         switch(p->operator)
         {
          case A_PLUS :

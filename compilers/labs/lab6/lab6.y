@@ -220,21 +220,21 @@ Factor              : T_ID
                     | '-' Factor ;
 
 ExternType          : T_STRINGTYPE 
-										| Type ;
+                    | Type ;
 
 Type                : T_INTTYPE
-										| T_BOOLTYPE ;
+                    | T_BOOLTYPE ;
 
 MethodType          : T_VOID
-										| Type ;
+                    | Type ;
 
 BoolConstant        : T_TRUE
-										| T_FALSE ;
+					| T_FALSE ;
 
 ArrayType           : '[' T_INTCONSTANT ']' Type ;
 
 Constant            : T_INTCONSTANT 
-										| BoolConstant ;
+                    | BoolConstant ;
 
 
 %%	/* end of rules, start of program */
@@ -243,5 +243,5 @@ int main()
 { 
 	yyparse();
     // TODO: print AST
-    // AST_Print_Type()
+    ASTprint(0, head);
 }

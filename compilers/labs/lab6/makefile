@@ -22,15 +22,10 @@ lab6: ast.c ast.h
 
 # simple exec rule
 run:
-	cd ./target
-	./lab6 
-	cd ..
+	./target/lab6
 
-fail:
-	./lab6 < ./tests/ErrorTest.decaf
-	
-good:
-	./lab6 < ./tests/GoodTest.decaf
+test:
+	./target/lab6 < ./tests/lab6test.decaf
 
 # make the dir clean of generated code
 clean:
