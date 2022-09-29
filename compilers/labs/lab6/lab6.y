@@ -242,4 +242,6 @@ Constant            : T_INTCONSTANT
 int main()
 { 
 	yyparse();
+    // TODO: print AST
+    // AST_Print_Type()
 }

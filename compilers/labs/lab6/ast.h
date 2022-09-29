@@ -26,7 +26,7 @@ enum AST_Tree_Element_Type {
    A_PARAM,
    A_VARDEC
 
-	   //missing
+	   //missing TODO
 };
 
 
@@ -35,14 +35,14 @@ enum AST_Operators {
    A_MINUS,
    A_TIMES,
    A_NOT
-	   //missing
+	   //missing TODO
 };
 
 enum AST_Decaf_Types {
    A_Decaf_INT,
    A_Decaf_BOOL,
    A_Decaf_VOID
-	   //missing
+	   //missing TODO
 };
 
 /* define a type AST node which will hold pointers to AST structs that will
