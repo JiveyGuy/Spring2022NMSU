@@ -265,7 +265,7 @@ output: tokens
                     /* comment line for double slash Return nothing, keep going */
                 }
 
-[\u0020\t]           {
+[ \t]           {
                     if(DEBUG == 1)
                     {
                         fprintf(stderr, "DEBUG: White space found.\n", line_num);

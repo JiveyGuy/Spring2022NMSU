@@ -1,5 +1,4 @@
 extern func print_int (int) int;
-
 package foo {
      var x int = 3;
      var Y bool = true;

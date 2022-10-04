@@ -107,7 +107,7 @@ void yyerror (s)
 //===============TYPES LIST
 %type <astnode> Externs ExternDefn
 
-%start Start
+%start program
 %union
 {
   int value;
@@ -116,7 +116,7 @@ void yyerror (s)
 }
 
 %%  /* end specs, begin rules */
-Start             : Externs T_PACKAGE T_ID '{' FieldDecls MethodDecls '}' 
+program             : Externs T_PACKAGE T_ID '{' FieldDecls MethodDecls '}' 
                     { 
                         PROGRAM = $1;
                     }
@@ -246,8 +246,7 @@ Factor              : Lvalue
                     | '!' Factor
                     | '-' Factor ;
 
-ExternType          : T_INTCONSTANT
-                    | T_STRINGTYPE 
+ExternType          : T_STRINGTYPE 
                     | Type ;
 
 Type                 : T_INTTYPE
