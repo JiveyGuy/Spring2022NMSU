@@ -239,8 +239,7 @@ BoolConstant         : T_TRUE
 ArrayType            : '[' T_INTCONSTANT ']' Type ;
 
 Constant             : T_INTCONSTANT 
-					           | BoolConstant
-                     | T_STRINGCONSTANT ;
+					           | BoolConstant ;
 
 %%	/* end of rules, start of program */
 

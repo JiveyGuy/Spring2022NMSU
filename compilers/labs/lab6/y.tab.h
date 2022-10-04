@@ -42,8 +42,9 @@
 #define YYSTYPE_IS_DECLARED 1
 typedef union YYSTYPE
 {
-	int value;
-	char* string;
+  int value;
+  char* string;
+  struct ASTnodetype *astnode; /*keeps track of our nodes*/
 } YYSTYPE;
 #endif /* !YYSTYPE_IS_DECLARED */
 extern YYSTYPE yylval;

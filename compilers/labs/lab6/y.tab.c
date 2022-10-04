@@ -17,7 +17,7 @@
 
 #define YYPURE 0
 
-#line 2 "lab5.y"
+#line 2 "lab6.y"
 
 /*
 /_/\     /_______/\ /_______/\     /_____/\    
@@ -26,44 +26,41 @@
   \:\ \____\:: __  \ \\::  _  \ \    \_::._\:\ 
    \:\/___/\\:.\ \  \ \\::(_)  \ \    /_____\/ 
     \_____\/ \__\/\__\/ \_______\/    \_____/ 
-	                                    
- 			
-   Shaun Cooper
+
+  Shaun Cooper
     January 2015
 
-   problems  fix unary minus, fix parenthesis, add multiplication
-   problems  make it so that verbose is on and off with an input argument instead of compiled in
-	
-	Editted by Jason Ivey, Sep 4, 2022:
-		Added mult, uminus, and fixed spelling. 
-		Fixed spacing issues. 
-		Added int type to main. 
-		Made debugsw external. 
-		Added int yylex(); to supress warnings. 
+  Editted by Jason Ivey, Sep 4, 2022:
+    Added mult, uminus, and fixed spelling. 
+    Fixed spacing issues. 
+    Added int type to main. 
+    Made debugsw external. 
+    Added int yylex(); to supress warnings. 
 
-	Editted by Jason Ivey, Sep 12, 2022:
-	    Made debug = 0
-	    added () to token list
+  Editted by Jason Ivey, Sep 12, 2022:
+      Made debug = 0
+      added () to token list
 
-	Editted by Jason Ivey, Sep 25, 2022:
-	    removed old:
-	    	symbol table
-	    	rules
-	    	debugsw
-	    	base
+  Editted by Jason Ivey, Sep 25, 2022:
+      removed old:
+        symbol table
+        rules
+        debugsw
+        base
 
   Editted by Jason Ivey, Sep 26, 2022:
       fixed missing:
         rules
 
 
-	INPUT: LEX Description + Text
-	OUTPUT: y.tab.c /h 
+  INPUT: LEX Description + Text
+  OUTPUT: y.tab.c /h 
 */
 
 /* begin specs */
 #include <stdio.h>
 #include <ctype.h>
+#include "ast.h"
 
 /* Added this to supress warn*/
 extern int yylex(void);
@@ -82,14 +79,15 @@ void yyerror (s)
 #endif
 #ifndef YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
-#line 68 "lab5.y"
+#line 106 "lab6.y"
 typedef union YYSTYPE
 {
-	int value;
-	char* string;
+  int value;
+  char* string;
+  struct ASTnodetype *astnode; /*keeps track of our nodes*/
 } YYSTYPE;
 #endif /* !YYSTYPE_IS_DECLARED */
-#line 93 "y.tab.c"
+#line 91 "y.tab.c"
 
 /* compatibility with bison */
 #ifdef YYPARSE_PARAM
@@ -165,8 +163,8 @@ extern int YYPARSE_DECL();
 #define YYERRCODE 256
 typedef short YYINT;
 static const YYINT yylhs[] = {                           -1,
-    0,    1,    1,    4,    5,    5,    7,    7,    2,    2,
-    9,    9,    9,    3,    3,   13,   14,   14,   16,   16,
+    0,    1,    1,    2,    5,    5,    7,    7,    3,    3,
+    9,    9,    9,    4,    4,   13,   14,   14,   16,   16,
    15,   17,   17,   19,   19,   18,   18,   20,   20,   21,
    22,   22,   20,   24,   25,   25,   26,   26,   27,   27,
    20,   20,   20,   20,   20,   20,   20,   20,   23,   23,
@@ -205,7 +203,7 @@ static const YYINT yydefred[] = {                         0,
    46,   43,    0,   41,
 };
 static const YYINT yydgoto[] = {                          2,
-    3,   20,   26,    4,   15,   30,   16,   17,   21,   18,
+    3,    4,   20,   26,   15,   30,   16,   17,   21,   18,
    35,  101,   27,   52,   73,   53,   64,   74,   65,   75,
    76,  102,  103,  104,  105,  106,  107,  108,  126,  109,
   131,  110,  139,   50,
@@ -247,7 +245,7 @@ static const YYINT yyrindex[] = {                      -138,
     0,    0,    0,    0,
 };
 static const YYINT yygindex[] = {                         0,
-  150,  137,  132,    0,  138,  103,    0,    0,    0,    8,
+  150,    0,  137,  132,  138,  103,    0,    0,    0,    8,
    97,  121,    0,    0,  -38,  106,  100,   98,    0,    0,
     0,  -33,    6,  -31,    0,   38,    0,   41,    0,   43,
     0,  -64,    0,    0,
@@ -353,8 +351,8 @@ static const char *const yyname[] = {
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"illegal-symbol",
 };
 static const char *const yyrule[] = {
-"$accept : Program",
-"Program : Externs T_PACKAGE T_ID '{' FieldDecls MethodDecls '}'",
+"$accept : Start",
+"Start : Externs T_PACKAGE T_ID '{' FieldDecls MethodDecls '}'",
 "Externs :",
 "Externs : ExternDefn Externs",
 "ExternDefn : T_EXTERN T_FUNC T_ID '(' ExternParmList ')' MethodType ';'",
@@ -479,14 +477,14 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 244 "lab5.y"
-	/* end of rules, start of program */
+#line 256 "lab6.y"
+  /* end of rules, start of program */
 
 int main()
 { 
-	yyparse();
+  yyparse();
 }
-#line 490 "y.tab.c"
+#line 488 "y.tab.c"
 
 #if YYDEBUG
 #include <stdio.h>	/* needed for printf */
@@ -685,6 +683,25 @@ yyreduce:
 
     switch (yyn)
     {
+case 2:
+#line 117 "lab6.y"
+	{ 
+                        yyval.astnode = NULL;
+                      }
+break;
+case 3:
+#line 121 "lab6.y"
+	{ 
+                        yyval.astnode = NULL;
+                      }
+break;
+case 4:
+#line 127 "lab6.y"
+	{ 
+                        yyval.astnode = ASTCreateNode( A_EXTERN );
+                      }
+break;
+#line 705 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;

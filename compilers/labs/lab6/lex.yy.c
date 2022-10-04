@@ -1,5 +1,5 @@
 
-#line 3 "lex.yy.c"
+#line 2 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -530,13 +530,12 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "lab6.l"
 /* 
-/_/\     /_______/\ /_______/\     /_____/\    
-\:\ \    \::: _  \ \\::: _  \ \    \::::_\/_   
- \:\ \    \::(_)  \ \\::(_)  \/_    \:\/___/\  
-  \:\ \____\:: __  \ \\::  _  \ \    \_::._\:\ 
-   \:\/___/\\:.\ \  \ \\::(_)  \ \    /_____\/ 
-    \_____\/ \__\/\__\/ \_______\/    \_____/ 
-                                    
+# ██╗      █████╗ ██████╗  ██████╗ 
+# ██║     ██╔══██╗██╔══██╗██╔════╝ 
+# ██║     ███████║██████╔╝███████╗ 
+# ██║     ██╔══██║██╔══██╗██╔═══██╗
+# ███████╗██║  ██║██████╔╝╚██████╔╝
+# ╚══════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ 
 
     Small LEX routine which returns two formal tokens
     (INTEGER and VARIABLE) along with single string 
@@ -570,14 +569,14 @@ input: text
 output: tokens
 
 */
-#line 44 "lab6.l"
+#line 43 "lab6.l"
     
     #include "y.tab.h"
     int line_num = 1;
     int DEBUG = 0; //Change 0 before submit
     int hex_to_int(char * hex_input);
-#line 580 "lex.yy.c"
-#line 581 "lex.yy.c"
+#line 578 "lex.yy.c"
+#line 579 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -794,10 +793,10 @@ YY_DECL
 		}
 
 	{
-#line 52 "lab6.l"
+#line 51 "lab6.l"
 
 
-#line 801 "lex.yy.c"
+#line 799 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -856,172 +855,172 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 54 "lab6.l"
+#line 53 "lab6.l"
 {return T_AND;           }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 55 "lab6.l"
+#line 54 "lab6.l"
 {return T_ASSIGN;        }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 56 "lab6.l"
+#line 55 "lab6.l"
 {return T_BOOLTYPE;      }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 57 "lab6.l"
+#line 56 "lab6.l"
 {return T_BREAK;         }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 58 "lab6.l"
+#line 57 "lab6.l"
 {return T_CHARCONSTANT;  }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 59 "lab6.l"
+#line 58 "lab6.l"
 {return T_CONTINUE;      }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 60 "lab6.l"
+#line 59 "lab6.l"
 {return T_DOT;           }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 61 "lab6.l"
+#line 60 "lab6.l"
 {return T_ELSE;          }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 62 "lab6.l"
+#line 61 "lab6.l"
 {return T_EQ;            }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 63 "lab6.l"
+#line 62 "lab6.l"
 {return T_EXTERN;        }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 64 "lab6.l"
+#line 63 "lab6.l"
 {return T_FALSE;         }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 65 "lab6.l"
+#line 64 "lab6.l"
 {return T_FOR;           }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 66 "lab6.l"
+#line 65 "lab6.l"
 {return T_FUNC;          }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 67 "lab6.l"
+#line 66 "lab6.l"
 {return T_GEQ;           }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 68 "lab6.l"
+#line 67 "lab6.l"
 {return T_GT;            }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 69 "lab6.l"
+#line 68 "lab6.l"
 {return T_ID;            }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 70 "lab6.l"
+#line 69 "lab6.l"
 {return T_IF;            }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 71 "lab6.l"
+#line 70 "lab6.l"
 {return T_INTCONSTANT;   }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 72 "lab6.l"
+#line 71 "lab6.l"
 {return T_INTTYPE;       }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 73 "lab6.l"
+#line 72 "lab6.l"
 {return T_LEFTSHIFT;     }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 74 "lab6.l"
+#line 73 "lab6.l"
 {return T_LEQ;           }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 75 "lab6.l"
+#line 74 "lab6.l"
 {return T_NEQ;           }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 76 "lab6.l"
+#line 75 "lab6.l"
 {return T_NULL;          }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 77 "lab6.l"
+#line 76 "lab6.l"
 {return T_OR;            }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 78 "lab6.l"
+#line 77 "lab6.l"
 {return T_PACKAGE;       }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 79 "lab6.l"
+#line 78 "lab6.l"
 {return T_RETURN;        }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 80 "lab6.l"
+#line 79 "lab6.l"
 {return T_RIGHTSHIFT;    }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 81 "lab6.l"
+#line 80 "lab6.l"
 {return T_STRINGCONSTANT;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 82 "lab6.l"
+#line 81 "lab6.l"
 {return T_STRINGTYPE;    }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 83 "lab6.l"
+#line 82 "lab6.l"
 {return T_TRUE;          }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 84 "lab6.l"
+#line 83 "lab6.l"
 {return T_VAR;           }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 85 "lab6.l"
+#line 84 "lab6.l"
 {return T_VOID;          }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 86 "lab6.l"
+#line 85 "lab6.l"
 {return T_WHILE;         }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 88 "lab6.l"
+#line 87 "lab6.l"
 {
                     yylval.value = yytext[1];
                     return T_CHARCONSTANT;
@@ -1029,7 +1028,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 93 "lab6.l"
+#line 92 "lab6.l"
 {
                     yylval.value = yytext[1];
                     return T_STRINGCONSTANT;
@@ -1037,7 +1036,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 98 "lab6.l"
+#line 97 "lab6.l"
 {
                     if(DEBUG == 1)
                     {
@@ -1050,7 +1049,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 109 "lab6.l"
+#line 108 "lab6.l"
 {
                     if(DEBUG == 1)
                     {
@@ -1062,7 +1061,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 118 "lab6.l"
+#line 117 "lab6.l"
 {
                     if(DEBUG == 1)
                     {
@@ -1074,14 +1073,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 127 "lab6.l"
+#line 126 "lab6.l"
 { 
                     /* comment line for double slash Return nothing, keep going */
                 }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 131 "lab6.l"
+#line 130 "lab6.l"
 {
                     if(DEBUG == 1)
                     {
@@ -1091,7 +1090,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 138 "lab6.l"
+#line 137 "lab6.l"
 {
                     if(DEBUG == 1)
                     {
@@ -1103,7 +1102,7 @@ YY_RULE_SETUP
 case 42:
 /* rule 42 can match eol */
 YY_RULE_SETUP
-#line 146 "lab6.l"
+#line 145 "lab6.l"
 {
                     if(DEBUG == 1)
                     {
@@ -1119,10 +1118,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 159 "lab6.l"
+#line 158 "lab6.l"
 ECHO;
 	YY_BREAK
-#line 1126 "lex.yy.c"
+#line 1124 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2127,7 +2126,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 159 "lab6.l"
+#line 158 "lab6.l"
 
 
 int yywrap(void)
