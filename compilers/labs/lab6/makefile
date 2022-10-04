@@ -27,7 +27,7 @@ run:
 	./lab6
 
 test:
-	./lab6 < lab6test.decaf
+	./lab6 < testinput.decaf
 
 # make the dir clean of generated code
 clean:

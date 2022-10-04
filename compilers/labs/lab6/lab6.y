@@ -43,9 +43,14 @@
 #include <ctype.h>
 #include "ast.h"
 
+
+
 // Added this to supress warn
 extern int yylex(void);
-extern int line_num; //counts lines
+extern int line_num; //counts lines (FROM LEX)
+
+// ast global
+struct ASTnodetype *PROGRAM;
 
 // Called by yyparse on error 
 void yyerror (s)  
@@ -78,9 +83,9 @@ void yyerror (s)
 %token T_GEQ            
 %token T_GT 
 %token T_LT            
-%token T_ID             
+%token <string> T_ID                        
 %token T_IF             
-%token T_INTCONSTANT    
+%token <value> T_INTCONSTANT    
 %token T_INTTYPE        
 %token T_LEFTSHT_IFT      
 %token T_LEQ            
@@ -90,7 +95,7 @@ void yyerror (s)
 %token T_PACKAGE        
 %token T_RETURN         
 %token T_RIGHTSHT_IFT     
-%token T_STRINGCONSTANT 
+%token <string> T_STRINGCONSTANT 
 %token T_STRINGTYPE     
 %token T_TRUE           
 %token T_VAR            
@@ -111,7 +116,11 @@ void yyerror (s)
 }
 
 %%  /* end specs, begin rules */
-Start             : Externs T_PACKAGE T_ID '{' FieldDecls MethodDecls '}' ;
+Start             : Externs T_PACKAGE T_ID '{' FieldDecls MethodDecls '}' 
+                    { 
+                        PROGRAM = $1;
+                    }
+                  ;
         
 Externs             : /*empty*/ 
                       { 
@@ -119,13 +128,14 @@ Externs             : /*empty*/
                       }
                     | ExternDefn Externs
                       { 
-                        $$ = NULL;
+                        $1->next = $2;
                       }
                     ;
-        
+
 ExternDefn          : T_EXTERN T_FUNC T_ID '(' ExternParmList ')' MethodType ';' 
                       { 
                         $$ = ASTCreateNode( A_EXTERN );
+                        $$-> name = $3;
                       }
                     ;
 
@@ -236,7 +246,8 @@ Factor              : Lvalue
                     | '!' Factor
                     | '-' Factor ;
 
-ExternType          : T_STRINGTYPE 
+ExternType          : T_INTCONSTANT
+                    | T_STRINGTYPE 
                     | Type ;
 
 Type                 : T_INTTYPE
@@ -258,4 +269,13 @@ Constant             : T_INTCONSTANT
 int main()
 { 
   yyparse();
+  printf("Parse complete!\n");
+  // We know pogram parse complete PROGRAM->AST
+  ASTprint(0, PROGRAM);
+}
+
+void debug(char s[]){
+  #ifdef DEBUG    
+    printf("DEBUG:: %s\n",s);
+  #endif
 }

@@ -201,6 +201,11 @@ void ASTprint(int level,ASTnode *p)
         ASTprint(level+1, p->S1);
       break;
 
+      case A_EXTERN :  
+        printf("A_EXTERN with NAME %S\n",p->name);
+        ASTprint(level+1, p->S1);
+      break;
+
       default: 
         printf("unknown type in ASTprint\n");
       break;
