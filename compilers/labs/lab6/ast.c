@@ -33,7 +33,26 @@ ASTnode *ASTCreateNode(enum AST_Tree_Element_Type mytype)
   if (mydebug)
   {
     fprintf(stderr,"Creating AST Node with type = ");
-    switch (mytype) {
+    print_node_type(mytype);
+    printf("\n");
+  }
+  // get head data
+  p        = (ASTnode *)malloc(sizeof(ASTnode)); 
+
+  // set up the Element type
+  p->type  = mytype; 
+  
+  // set default values
+  p->S1    = NULL;
+  p->S2    = NULL;  
+  p->value = 0;
+
+  // return head
+  return(p);
+  }
+
+void print_node_type(enum AST_Tree_Element_Type mytype){
+  switch (mytype) {
       case A_PACKAGE: 
         printf("A_PACKAGE");
       break;
@@ -114,26 +133,27 @@ ASTnode *ASTCreateNode(enum AST_Tree_Element_Type mytype)
         printf("A_VAR_RVAL");
       break;
 
+      case A_IFSTMT: 
+        printf("A_IFSTMT");
+      break;
+
+      case A_METHOD_CALL: 
+        printf("A_METHOD_CALL");
+      break;
+
+      case A_METHOD_CALL_LIST: 
+        printf("A_METHOD_CALL_LIST");
+      break; 
+
+      case A_ASSIGN: 
+        printf("A_ASSIGN");
+      break; 
+
       default :
         printf("A_UNKOWN");
       break;
     }
-    printf("\n");
-  }
-  // get head data
-  p        = (ASTnode *)malloc(sizeof(ASTnode)); 
-
-  // set up the Element type
-  p->type  = mytype; 
-  
-  // set default values
-  p->S1    = NULL;
-  p->S2    = NULL;  
-  p->value = 0;
-
-  // return head
-  return(p);
-  }
+}
 
 //  Helper function to print tabbing 
 void PT(int howmany)
@@ -265,13 +285,76 @@ void ASTprint(int level,ASTnode *p)
         printf("EXPR ");
         switch(p->operator)
         {
-         case A_PLUS :
-          printf(" + ");
-         break;
+          case A_PLUS: 
+             printf("A_PLUS");
+          break;
 
-         case A_MINUS:
-          printf(" - ");
-         break;
+          case A_MINUS: 
+             printf("A_MINUS");
+          break;
+
+          case A_TIMES: 
+             printf("A_TIMES");
+          break;
+
+          case A_MOD: 
+             printf("A_MOD");
+          break;
+
+          case A_DIV: 
+             printf("A_DIV");
+          break;
+
+          case A_AND: 
+             printf("A_AND");
+          break;
+
+          case A_OR: 
+             printf("A_OR");
+          break;
+
+          case A_LS: 
+             printf("A_LS");
+          break;
+
+          case A_RS: 
+             printf("A_RS");
+          break;
+
+          case A_NOT: 
+             printf("A_NOT");
+          break;
+
+          case A_UMINUS: 
+             printf("A_UMINUS");
+          break;
+
+          case A_LEQ: 
+             printf("A_LEQ");
+          break;
+
+          case A_GT : 
+             printf("A_GT");
+          break;
+
+          case A_LT : 
+             printf("A_LT");
+          break;
+
+          case A_GEQ: 
+             printf("A_GEQ");
+          break;
+
+          case A_EQ : 
+             printf("A_EQ");
+          break;
+
+          case A_NEQ : 
+              printf("A_NEQ");
+          break;
+
+         default:
+          printf("unkown operator ");
         }
         
         printf("\n");
@@ -311,7 +394,7 @@ void ASTprint(int level,ASTnode *p)
         printf("CONSTANT_BOOL with value ");
         if (p->value == 1)
         {
-          printf("FALSE");
+          printf("TRUE");
         } 
         else  
         {
@@ -367,7 +450,11 @@ void ASTprint(int level,ASTnode *p)
 
       default: 
         printf("unknown type in ASTprint\n");
-        P_Print(p);
+        if( mydebug == 1)
+        {
+          print_node_type(p->type);
+          P_Print(p);
+        }
       break;
     }
     ASTprint(level, p->next);

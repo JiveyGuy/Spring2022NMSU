@@ -21,6 +21,7 @@ enum AST_Tree_Element_Type {
    A_METHODDEC,
    A_NUMBER,
    A_WHILESTMT,
+   A_IFSTMT,
    A_BLOCK,
    A_EXPR,
    A_PARAM,
@@ -38,7 +39,8 @@ enum AST_Tree_Element_Type {
    A_RETURN,
    A_VAR_RVAL,
    A_METHOD_CALL,
-   A_METHOD_CALL_LIST
+   A_METHOD_CALL_LIST,
+   A_ASSIGN
       //missing, 
 
 };
@@ -100,5 +102,7 @@ void ASTprint(int level,ASTnode *p); // prints tree with level horizontal spacei
 
 // Will print a node p
 void P_Print( ASTnode *p);
+// Will print the type of a node. 
+void print_node_type(enum AST_Tree_Element_Type mytype);
 
 #endif // of AST_H

@@ -569,13 +569,13 @@ static const yytype_uint16 yyrline[] =
        0,   130,   130,   142,   145,   151,   160,   161,   164,   169,
      178,   179,   186,   192,   199,   209,   210,   217,   228,   229,
      235,   241,   250,   259,   260,   267,   273,   283,   284,   291,
-     292,   293,   294,   295,   296,   297,   298,   301,   302,   304,
-     310,   312,   316,   320,   327,   333,   335,   340,   348,   357,
-     358,   360,   361,   369,   370,   379,   380,   381,   382,   383,
-     384,   387,   388,   397,   398,   400,   401,   410,   411,   412,
-     413,   414,   415,   416,   419,   420,   421,   422,   423,   429,
-     437,   438,   440,   441,   444,   446,   448,   453,   459,   467,
-     472,   477
+     292,   293,   294,   295,   296,   297,   298,   301,   312,   320,
+     326,   334,   338,   342,   349,   355,   363,   368,   376,   385,
+     386,   388,   389,   397,   398,   407,   408,   409,   410,   411,
+     412,   415,   416,   425,   426,   428,   429,   438,   439,   440,
+     441,   442,   443,   444,   447,   448,   449,   450,   451,   457,
+     465,   466,   468,   469,   472,   474,   476,   481,   487,   495,
+     500,   505
 };
 #endif
 
@@ -1752,367 +1752,411 @@ yyreduce:
 #line 1753 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 39:
-#line 305 "lab6.y" /* yacc.c:1646  */
-    {
-                        (yyval.astnode) = ASTCreateNode( A_BREAK );
-                      }
-#line 1761 "y.tab.c" /* yacc.c:1646  */
+  case 37:
+#line 302 "lab6.y" /* yacc.c:1646  */
+    { 
+                      (yyval.astnode) = ASTCreateNode( A_IFSTMT );
+                      (yyval.astnode)->S1 = ASTCreateNode( A_IFSTMT );
+                      (yyval.astnode)->S1->S1 = (yyvsp[-4].astnode);
+                      (yyval.astnode)->S1->S2 = (yyvsp[-2].astnode);
+                      (yyval.astnode)->S2 = ASTCreateNode( A_IFSTMT );
+                      (yyval.astnode)->S2->S1 = ((yyvsp[-4].astnode) == 0) ? 1 : 0;
+                      (yyval.astnode)->S2->S2 = (yyvsp[0].astnode);
+                    }
+#line 1767 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 41:
+  case 38:
 #line 313 "lab6.y" /* yacc.c:1646  */
-    {
-                        (yyval.astnode) = ASTCreateNode( A_RETURN );
-                      }
-#line 1769 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 42:
-#line 317 "lab6.y" /* yacc.c:1646  */
-    {
-                        (yyval.astnode) = ASTCreateNode( A_RETURN );
-                      }
+    { 
+                      (yyval.astnode) = ASTCreateNode( A_IFSTMT );
+                      (yyval.astnode)->S1 = (yyvsp[-2].astnode);
+                      (yyval.astnode)->S2 = (yyvsp[0].astnode);
+                    }
 #line 1777 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 43:
+  case 39:
 #line 321 "lab6.y" /* yacc.c:1646  */
     {
-                        (yyval.astnode) = ASTCreateNode( A_RETURN );
+                        (yyval.astnode) = ASTCreateNode( A_BREAK );
+                      }
+#line 1785 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 40:
+#line 327 "lab6.y" /* yacc.c:1646  */
+    { 
+                        (yyval.astnode) = ASTCreateNode( A_WHILESTMT );
                         (yyval.astnode)->S1 = (yyvsp[-2].astnode);
+                        (yyval.astnode)->S2 = (yyvsp[0].astnode);
                       }
-#line 1786 "y.tab.c" /* yacc.c:1646  */
+#line 1795 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 44:
-#line 328 "lab6.y" /* yacc.c:1646  */
+  case 41:
+#line 335 "lab6.y" /* yacc.c:1646  */
     {
-                        (yyval.astnode) = ASTCreateNode( A_CONTINUE );
-                      }
-#line 1794 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 46:
-#line 336 "lab6.y" /* yacc.c:1646  */
-    {
-                        (yyval.astnode) = ASTCreateNode( A_VAR_RVAL );
-                        (yyval.astnode)->name = (yyvsp[0].string);
+                        (yyval.astnode) = ASTCreateNode( A_RETURN );
                       }
 #line 1803 "y.tab.c" /* yacc.c:1646  */
     break;
 
+  case 42:
+#line 339 "lab6.y" /* yacc.c:1646  */
+    {
+                        (yyval.astnode) = ASTCreateNode( A_RETURN );
+                      }
+#line 1811 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 43:
+#line 343 "lab6.y" /* yacc.c:1646  */
+    {
+                        (yyval.astnode) = ASTCreateNode( A_RETURN );
+                        (yyval.astnode)->S1 = (yyvsp[-2].astnode);
+                      }
+#line 1820 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 44:
+#line 350 "lab6.y" /* yacc.c:1646  */
+    {
+                        (yyval.astnode) = ASTCreateNode( A_CONTINUE );
+                      }
+#line 1828 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 45:
+#line 356 "lab6.y" /* yacc.c:1646  */
+    {
+                        (yyval.astnode) = ASTCreateNode( A_ASSIGN );
+                        (yyval.astnode)->S1 = (yyvsp[-2].astnode);
+                        (yyval.astnode)->S2 = (yyvsp[0].astnode);
+                      }
+#line 1838 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 46:
+#line 364 "lab6.y" /* yacc.c:1646  */
+    {
+                        (yyval.astnode) = ASTCreateNode( A_VAR_RVAL );
+                        (yyval.astnode)->name = (yyvsp[0].string);
+                      }
+#line 1847 "y.tab.c" /* yacc.c:1646  */
+    break;
+
   case 47:
-#line 341 "lab6.y" /* yacc.c:1646  */
+#line 369 "lab6.y" /* yacc.c:1646  */
     {
                         (yyval.astnode) = ASTCreateNode( A_VAR_RVAL );
                         (yyval.astnode)->name = (yyvsp[-3].string);
                         (yyval.astnode)->S1   = (yyvsp[-1].astnode);
                       }
-#line 1813 "y.tab.c" /* yacc.c:1646  */
+#line 1857 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 349 "lab6.y" /* yacc.c:1646  */
+#line 377 "lab6.y" /* yacc.c:1646  */
     {
                         (yyval.astnode) = ASTCreateNode( A_METHOD_CALL );
                         (yyval.astnode)->name = (yyvsp[-3].string);
                         (yyval.astnode)->S1 = (yyvsp[-1].astnode);
                       }
-#line 1823 "y.tab.c" /* yacc.c:1646  */
+#line 1867 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 357 "lab6.y" /* yacc.c:1646  */
+#line 385 "lab6.y" /* yacc.c:1646  */
     {(yyval.astnode) = NULL;}
-#line 1829 "y.tab.c" /* yacc.c:1646  */
+#line 1873 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 358 "lab6.y" /* yacc.c:1646  */
+#line 386 "lab6.y" /* yacc.c:1646  */
     {(yyval.astnode) = (yyvsp[0].astnode);}
-#line 1835 "y.tab.c" /* yacc.c:1646  */
+#line 1879 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 360 "lab6.y" /* yacc.c:1646  */
+#line 388 "lab6.y" /* yacc.c:1646  */
     {(yyval.astnode) = (yyvsp[0].astnode);}
-#line 1841 "y.tab.c" /* yacc.c:1646  */
+#line 1885 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 362 "lab6.y" /* yacc.c:1646  */
+#line 390 "lab6.y" /* yacc.c:1646  */
     {
                         (yyval.astnode) = ASTCreateNode( A_EXPR );
                         (yyval.astnode)->S1 = (yyvsp[-2].astnode);
                         (yyval.astnode)->S1 = (yyvsp[0].astnode);
                       }
-#line 1851 "y.tab.c" /* yacc.c:1646  */
+#line 1895 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 369 "lab6.y" /* yacc.c:1646  */
+#line 397 "lab6.y" /* yacc.c:1646  */
     {(yyval.astnode) = (yyvsp[0].astnode);}
-#line 1857 "y.tab.c" /* yacc.c:1646  */
+#line 1901 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 371 "lab6.y" /* yacc.c:1646  */
+#line 399 "lab6.y" /* yacc.c:1646  */
     {
                         (yyval.astnode) = ASTCreateNode( A_EXPR );
                         (yyval.astnode)->S1 = (yyvsp[-2].astnode);
                         (yyval.astnode)->operator = (yyvsp[-1].operator);
                         (yyval.astnode)->S2 = (yyvsp[0].astnode);
                       }
-#line 1868 "y.tab.c" /* yacc.c:1646  */
+#line 1912 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 379 "lab6.y" /* yacc.c:1646  */
+#line 407 "lab6.y" /* yacc.c:1646  */
     {(yyval.operator) = A_LEQ;}
-#line 1874 "y.tab.c" /* yacc.c:1646  */
+#line 1918 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 380 "lab6.y" /* yacc.c:1646  */
+#line 408 "lab6.y" /* yacc.c:1646  */
     {(yyval.operator) = A_GT ;}
-#line 1880 "y.tab.c" /* yacc.c:1646  */
+#line 1924 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 381 "lab6.y" /* yacc.c:1646  */
+#line 409 "lab6.y" /* yacc.c:1646  */
     {(yyval.operator) = A_LT ;}
-#line 1886 "y.tab.c" /* yacc.c:1646  */
+#line 1930 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 382 "lab6.y" /* yacc.c:1646  */
+#line 410 "lab6.y" /* yacc.c:1646  */
     {(yyval.operator) = A_GEQ;}
-#line 1892 "y.tab.c" /* yacc.c:1646  */
+#line 1936 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 383 "lab6.y" /* yacc.c:1646  */
+#line 411 "lab6.y" /* yacc.c:1646  */
     {(yyval.operator) = A_EQ ;}
-#line 1898 "y.tab.c" /* yacc.c:1646  */
+#line 1942 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 384 "lab6.y" /* yacc.c:1646  */
+#line 412 "lab6.y" /* yacc.c:1646  */
     {(yyval.operator) = A_NEQ;}
-#line 1904 "y.tab.c" /* yacc.c:1646  */
+#line 1948 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 387 "lab6.y" /* yacc.c:1646  */
+#line 415 "lab6.y" /* yacc.c:1646  */
     {(yyval.astnode) = (yyvsp[0].astnode);}
-#line 1910 "y.tab.c" /* yacc.c:1646  */
+#line 1954 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 389 "lab6.y" /* yacc.c:1646  */
+#line 417 "lab6.y" /* yacc.c:1646  */
     {
                         (yyval.astnode) = ASTCreateNode( A_EXPR );
                         (yyval.astnode)->S1 = (yyvsp[-2].astnode);
                         (yyval.astnode)->operator = (yyvsp[-1].operator);
                         (yyval.astnode)->S2 = (yyvsp[0].astnode);
                       }
-#line 1921 "y.tab.c" /* yacc.c:1646  */
+#line 1965 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 397 "lab6.y" /* yacc.c:1646  */
+#line 425 "lab6.y" /* yacc.c:1646  */
     {(yyval.operator) = A_PLUS;  }
-#line 1927 "y.tab.c" /* yacc.c:1646  */
+#line 1971 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 398 "lab6.y" /* yacc.c:1646  */
+#line 426 "lab6.y" /* yacc.c:1646  */
     {(yyval.operator) = A_MINUS; }
-#line 1933 "y.tab.c" /* yacc.c:1646  */
+#line 1977 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 400 "lab6.y" /* yacc.c:1646  */
+#line 428 "lab6.y" /* yacc.c:1646  */
     {(yyval.astnode) = (yyvsp[0].astnode);}
-#line 1939 "y.tab.c" /* yacc.c:1646  */
+#line 1983 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 402 "lab6.y" /* yacc.c:1646  */
+#line 430 "lab6.y" /* yacc.c:1646  */
     {
                         (yyval.astnode) = ASTCreateNode( A_EXPR );
                         (yyval.astnode)->S1 = (yyvsp[-2].astnode);
                         (yyval.astnode)->operator = (yyvsp[-1].operator);
                         (yyval.astnode)->S2 = (yyvsp[0].astnode);
                       }
-#line 1950 "y.tab.c" /* yacc.c:1646  */
+#line 1994 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 410 "lab6.y" /* yacc.c:1646  */
+#line 438 "lab6.y" /* yacc.c:1646  */
     {(yyval.operator) = A_TIMES;}
-#line 1956 "y.tab.c" /* yacc.c:1646  */
+#line 2000 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 411 "lab6.y" /* yacc.c:1646  */
+#line 439 "lab6.y" /* yacc.c:1646  */
     {(yyval.operator) = A_DIV;}
-#line 1962 "y.tab.c" /* yacc.c:1646  */
+#line 2006 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 412 "lab6.y" /* yacc.c:1646  */
+#line 440 "lab6.y" /* yacc.c:1646  */
     {(yyval.operator) = A_MOD;}
-#line 1968 "y.tab.c" /* yacc.c:1646  */
+#line 2012 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 413 "lab6.y" /* yacc.c:1646  */
+#line 441 "lab6.y" /* yacc.c:1646  */
     {(yyval.operator) = A_AND;}
-#line 1974 "y.tab.c" /* yacc.c:1646  */
+#line 2018 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 414 "lab6.y" /* yacc.c:1646  */
+#line 442 "lab6.y" /* yacc.c:1646  */
     {(yyval.operator) = A_OR;}
-#line 1980 "y.tab.c" /* yacc.c:1646  */
+#line 2024 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 415 "lab6.y" /* yacc.c:1646  */
+#line 443 "lab6.y" /* yacc.c:1646  */
     {(yyval.operator) = A_LS;}
-#line 1986 "y.tab.c" /* yacc.c:1646  */
+#line 2030 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 416 "lab6.y" /* yacc.c:1646  */
+#line 444 "lab6.y" /* yacc.c:1646  */
     {(yyval.operator) = A_RS;}
-#line 1992 "y.tab.c" /* yacc.c:1646  */
+#line 2036 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 76:
-#line 421 "lab6.y" /* yacc.c:1646  */
+#line 449 "lab6.y" /* yacc.c:1646  */
     {(yyval.astnode) = (yyvsp[0].astnode);}
-#line 1998 "y.tab.c" /* yacc.c:1646  */
+#line 2042 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 422 "lab6.y" /* yacc.c:1646  */
+#line 450 "lab6.y" /* yacc.c:1646  */
     {(yyval.astnode) = (yyvsp[-1].astnode);}
-#line 2004 "y.tab.c" /* yacc.c:1646  */
+#line 2048 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 424 "lab6.y" /* yacc.c:1646  */
+#line 452 "lab6.y" /* yacc.c:1646  */
     {
                         (yyval.astnode) = ASTCreateNode( A_EXPR );
                         (yyval.astnode)->operator = A_NOT;
                         (yyval.astnode)->S1 = (yyvsp[0].astnode);
                       }
-#line 2014 "y.tab.c" /* yacc.c:1646  */
+#line 2058 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 430 "lab6.y" /* yacc.c:1646  */
+#line 458 "lab6.y" /* yacc.c:1646  */
     {
                         (yyval.astnode) = ASTCreateNode( A_UMINUS );
                         (yyval.astnode)->operator = A_NOT;
                         (yyval.astnode)->S1 = (yyvsp[0].astnode);
                       }
-#line 2024 "y.tab.c" /* yacc.c:1646  */
+#line 2068 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 437 "lab6.y" /* yacc.c:1646  */
+#line 465 "lab6.y" /* yacc.c:1646  */
     {(yyval.asttype) = A_Decaf_STRING;}
-#line 2030 "y.tab.c" /* yacc.c:1646  */
+#line 2074 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 438 "lab6.y" /* yacc.c:1646  */
+#line 466 "lab6.y" /* yacc.c:1646  */
     {(yyval.asttype) = (yyvsp[0].asttype);}
-#line 2036 "y.tab.c" /* yacc.c:1646  */
+#line 2080 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 440 "lab6.y" /* yacc.c:1646  */
+#line 468 "lab6.y" /* yacc.c:1646  */
     {(yyval.asttype) = A_Decaf_INT;}
-#line 2042 "y.tab.c" /* yacc.c:1646  */
+#line 2086 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 441 "lab6.y" /* yacc.c:1646  */
+#line 469 "lab6.y" /* yacc.c:1646  */
     {(yyval.asttype) = A_Decaf_BOOL;}
-#line 2048 "y.tab.c" /* yacc.c:1646  */
+#line 2092 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 445 "lab6.y" /* yacc.c:1646  */
+#line 473 "lab6.y" /* yacc.c:1646  */
     {(yyval.asttype) = A_Decaf_VOID;}
-#line 2054 "y.tab.c" /* yacc.c:1646  */
+#line 2098 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 446 "lab6.y" /* yacc.c:1646  */
+#line 474 "lab6.y" /* yacc.c:1646  */
     {(yyval.asttype) = (yyvsp[0].asttype);}
-#line 2060 "y.tab.c" /* yacc.c:1646  */
+#line 2104 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 449 "lab6.y" /* yacc.c:1646  */
+#line 477 "lab6.y" /* yacc.c:1646  */
     {
                         (yyval.astnode) = ASTCreateNode( A_CONSTANT_BOOL );
                         (yyval.astnode)->value = 1;
                       }
-#line 2069 "y.tab.c" /* yacc.c:1646  */
+#line 2113 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 454 "lab6.y" /* yacc.c:1646  */
+#line 482 "lab6.y" /* yacc.c:1646  */
     {
                         (yyval.astnode) = ASTCreateNode( A_CONSTANT_BOOL );
                         (yyval.astnode)->value = 0;
                       }
-#line 2078 "y.tab.c" /* yacc.c:1646  */
+#line 2122 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 460 "lab6.y" /* yacc.c:1646  */
+#line 488 "lab6.y" /* yacc.c:1646  */
     {
                         (yyval.astnode) = ASTCreateNode( A_ARRAY_TYPE );
                         (yyval.astnode)->value = (yyvsp[-2].value);
                         (yyval.astnode)->A_Declared_TYPE = (yyvsp[0].asttype);
                       }
-#line 2088 "y.tab.c" /* yacc.c:1646  */
+#line 2132 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 89:
-#line 468 "lab6.y" /* yacc.c:1646  */
+#line 496 "lab6.y" /* yacc.c:1646  */
     {
                         (yyval.astnode) = ASTCreateNode( A_CONSTANT_INT );
                         (yyval.astnode)->value = (yyvsp[0].value);
                       }
-#line 2097 "y.tab.c" /* yacc.c:1646  */
+#line 2141 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 473 "lab6.y" /* yacc.c:1646  */
+#line 501 "lab6.y" /* yacc.c:1646  */
     {
                         (yyval.astnode) = ASTCreateNode( A_CONSTANT_STRING );
                         (yyval.astnode)->name = (yyvsp[0].string);
                       }
-#line 2106 "y.tab.c" /* yacc.c:1646  */
+#line 2150 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 477 "lab6.y" /* yacc.c:1646  */
+#line 505 "lab6.y" /* yacc.c:1646  */
     {(yyval.astnode) = (yyvsp[0].astnode);}
-#line 2112 "y.tab.c" /* yacc.c:1646  */
+#line 2156 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2116 "y.tab.c" /* yacc.c:1646  */
+#line 2160 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2340,7 +2384,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 479 "lab6.y" /* yacc.c:1906  */
+#line 507 "lab6.y" /* yacc.c:1906  */
   /* end of rules, start of program */
 
 int main()

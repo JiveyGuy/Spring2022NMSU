@@ -17,7 +17,7 @@ package foo {
     return (5);
     return (true);
     return (false);
-    return ("yes");
+    return (3/5);
 
   }
 } //end of foo

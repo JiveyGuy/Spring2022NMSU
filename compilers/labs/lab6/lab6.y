@@ -110,7 +110,7 @@ void yyerror (s)
 %type <astnode> BoolConstant Constant BreakStatement ContinueStatement
 %type <astnode> Statement Statements ReturnStatement Lvalue MethodCall
 %type <astnode> Expr Additiveexpression Term Factor MethodCallList
-%type <astnode> FullMethodCallList
+%type <astnode> FullMethodCallList WhileStatement IfStatement Assign
 
 %type <asttype> MethodType Type ExternType
 
@@ -299,7 +299,23 @@ Statement           : Block             {$$ = $1;}
                     ;
 
 IfStatement         : T_IF '(' Expr ')' Block T_ELSE Block
-                    | T_IF '(' Expr  ')' Block ;
+                    { 
+                      $$ = ASTCreateNode( A_IFSTMT );
+                      $$->S1 = ASTCreateNode( A_IFSTMT );
+                      $$->S1->S1 = $3;
+                      $$->S1->S2 = $5;
+                      $$->S2 = ASTCreateNode( A_IFSTMT );
+                      $$->S2->S1 = ($3 == 0) ? 1 : 0;
+                      $$->S2->S2 = $7;
+                    } 
+
+                    | T_IF '(' Expr ')' Block 
+                    { 
+                      $$ = ASTCreateNode( A_IFSTMT );
+                      $$->S1 = $3;
+                      $$->S2 = $5;
+                    } 
+                    ;
 
 BreakStatement      : T_BREAK ';' 
                       {
@@ -307,7 +323,13 @@ BreakStatement      : T_BREAK ';'
                       } 
                      ;
 
-WhileStatement      : T_WHILE '(' Expr ')' Block ;
+WhileStatement      : T_WHILE '(' Expr ')' Block 
+                      { 
+                        $$ = ASTCreateNode( A_WHILESTMT );
+                        $$->S1 = $3;
+                        $$->S2 = $5;
+                      }
+                    ;
 
 ReturnStatement      : T_RETURN ';'
                       {
@@ -330,7 +352,13 @@ ContinueStatement    : T_CONTINUE ';'
                       } 
                     ;
         
-Assign              : Lvalue T_ASSIGN Expr ; 
+Assign              : Lvalue T_ASSIGN Expr 
+                      {
+                        $$ = ASTCreateNode( A_ASSIGN );
+                        $$->S1 = $1;
+                        $$->S2 = $3;
+                      }
+                    ; 
         
 Lvalue              : T_ID 
                       {
