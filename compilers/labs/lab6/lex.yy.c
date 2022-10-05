@@ -601,7 +601,7 @@ output: tokens
 
 */
 #line 43 "lab6.l"
-    
+    #include "ast.h"
     #include "y.tab.h"
     int line_num = 1;
     int DEBUG = 1; //Change 0 before submit
@@ -1199,7 +1199,7 @@ YY_RULE_SETUP
 
                     if(DEBUG == 1)
                     {
-                        fprintf(stderr, "DEBUG: T_INTCONSTANT found. %d\n", line_num);
+                        fprintf(stderr, "DEBUG: T_INTCONSTANT found on line: %d\n", line_num);
                         fprintf(stderr, "DEBUG: T_INTCONSTANT = %d\n", atoi((char *)yytext));
                     }
 
@@ -1212,7 +1212,7 @@ YY_RULE_SETUP
 {
                     if(DEBUG == 1)
                     {
-                        fprintf(stderr,"DEBUG: Hex-Digit found.\n");
+                        printf("DEBUG: Hex-Digit found.\n");
                     }
                     yylval.value = hex_to_int((char *)yytext);
                     return T_INTCONSTANT;
@@ -1231,7 +1231,7 @@ YY_RULE_SETUP
 {
                     if(DEBUG == 1)
                     {
-                        fprintf(stderr, "DEBUG: White space found.\n", line_num);
+                        printf("DEBUG: White space found.\n");
                     }
                 }
 	YY_BREAK
@@ -1241,10 +1241,10 @@ YY_RULE_SETUP
 {
                     if(DEBUG == 1)
                     {
-                        fprintf(stderr, "DEBUG: Token found.\n", line_num);
-                        fprintf(stderr, "DEBUG: Token = %s\n", (char *)yytext);
+                        printf("DEBUG: Token found.\n", line_num);
+                        printf("DEBUG: Token = %s\n", (char *)yytext);
                     }
-                    return (*yytext);
+                    return *yytext;
                 }
 	YY_BREAK
 case 42:
@@ -1254,10 +1254,10 @@ YY_RULE_SETUP
 {
                     if(DEBUG == 1)
                     {
-                        fprintf(stderr, "DEBUG: newline token found. line_num++\n", line_num);
+                        printf("DEBUG: newline token found. line_num++\n");
                     }
                     line_num++;
-                    return (*yytext);
+                    // return (*yytext);
       }
 	YY_BREAK
 case 43:

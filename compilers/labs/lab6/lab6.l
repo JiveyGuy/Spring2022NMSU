@@ -40,7 +40,7 @@ output: tokens
 */
 
 %{
-    
+    #include "ast.h"
     #include "y.tab.h"
     int line_num = 1;
     int DEBUG = 1; //Change 0 before submit
@@ -245,7 +245,7 @@ output: tokens
 
                     if(DEBUG == 1)
                     {
-                        fprintf(stderr, "DEBUG: T_INTCONSTANT found. %d\n", line_num);
+                        fprintf(stderr, "DEBUG: T_INTCONSTANT found on line: %d\n", line_num);
                         fprintf(stderr, "DEBUG: T_INTCONSTANT = %d\n", atoi((char *)yytext));
                     }
 
@@ -255,7 +255,7 @@ output: tokens
 0x[A-Z0-9][A-Z0-9]*    {
                     if(DEBUG == 1)
                     {
-                        fprintf(stderr,"DEBUG: Hex-Digit found.\n");
+                        printf("DEBUG: Hex-Digit found.\n");
                     }
                     yylval.value = hex_to_int((char *)yytext);
                     return T_INTCONSTANT;
@@ -268,26 +268,26 @@ output: tokens
 [ \t]           {
                     if(DEBUG == 1)
                     {
-                        fprintf(stderr, "DEBUG: White space found.\n", line_num);
+                        printf("DEBUG: White space found.\n");
                     }
                 }
 
 [=()\[\]{}\-+*/%\!;,]    {
                     if(DEBUG == 1)
                     {
-                        fprintf(stderr, "DEBUG: Token found.\n", line_num);
-                        fprintf(stderr, "DEBUG: Token = %s\n", (char *)yytext);
+                        printf("DEBUG: Token found.\n", line_num);
+                        printf("DEBUG: Token = %s\n", (char *)yytext);
                     }
-                    return (*yytext);
+                    return *yytext;
                 }
 
 \n    {
                     if(DEBUG == 1)
                     {
-                        fprintf(stderr, "DEBUG: newline token found. line_num++\n", line_num);
+                        printf("DEBUG: newline token found. line_num++\n");
                     }
                     line_num++;
-                    return (*yytext);
+                    // return (*yytext);
       }
 
 %%

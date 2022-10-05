@@ -25,7 +25,9 @@ enum AST_Tree_Element_Type {
    A_EXPR,
    A_PARAM,
    A_VARDEC,
-   A_EXTERN
+   A_EXTERN,
+   A_EXTERN_TYPE,
+   A_PROGRAM
       //missing
 };
 
@@ -41,8 +43,8 @@ enum AST_Operators {
 enum AST_Decaf_Types {
    A_Decaf_INT,
    A_Decaf_BOOL,
-   A_Decaf_VOID
-      //missing
+   A_Decaf_VOID,
+   A_Decaf_STRING
 };
 
 /* define a type AST node which will hold pointers to AST structs that will
@@ -54,6 +56,7 @@ typedef struct ASTnodetype
      enum AST_Operators operator;
      char * name;
      int value;
+     enum AST_Decaf_Types A_Declared_TYPE;
      ///.. missing
      struct ASTnodetype *S1,*S2, *next ; /* used for holding IF and WHILE components -- not very descriptive */
 } ASTnode;

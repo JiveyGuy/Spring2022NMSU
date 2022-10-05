@@ -62,11 +62,26 @@ void AST_Print_Type( enum AST_Decaf_Types t)
 {
  switch (t)
  {
-    case  A_Decaf_INT : 
+    case A_Decaf_INT : 
       printf(" INT ");
     break;
 
-    // TODO MISING
+    case A_Decaf_BOOL : 
+      printf(" BOOL ");
+    break;
+
+    // case A_Decaf_VOID : 
+    //   printf(" VOID ");
+    // break; //in video Dr. Cooper said no void. 
+    
+    // case A_Decaf_VOID : 
+    //   printf(" VOID ");
+    // break; //in video Dr. Cooper said no void. 
+
+
+    case A_Decaf_STRING : 
+      printf(" STRING ");
+    break;
 
     default:
       fprintf(stderr,"Unknown AST DECAF TYPE !!!\n");
@@ -91,16 +106,17 @@ void ASTprint(int level,ASTnode *p)
     switch (p->type) 
     {
       case A_VARDEC :  printf("Variable ");
-        if (p->operator == A_Decaf_VOID)
-        {
-          printf("VOID ");
-        }
-
+        // if (p->operator == A_Decaf_VOID)
+        // {
+        //   printf("VOID ");
+        // }
         printf(" %s",p->name);
-        if (p->value > 0)
-        {
-          printf("[%d]",p->value);
-        }
+        AST_Print_Type(p->A_Declared_TYPE);
+        printf(" = %d ", p-> value);
+        // if (p->value > 0)
+        // {
+        //   printf("[%d]",p->value);
+        // }
         printf("\n");
         ASTprint(level,p->S1);
       break;
@@ -201,10 +217,38 @@ void ASTprint(int level,ASTnode *p)
         ASTprint(level+1, p->S1);
       break;
 
-      case A_EXTERN :  
-        printf("A_EXTERN with NAME %S\n",p->name);
+      case A_EXTERN_TYPE :  
+        printf("A_EXTERN_TYPE ");
+        AST_Print_Type(p->A_Declared_TYPE);
         ASTprint(level+1, p->S1);
       break;
+
+      case A_EXTERN :  
+        printf("A_EXTERN %s (", p->name);
+        ASTprint(level+1, p->S1);
+        printf(" )");
+        AST_Print_Type(p->A_Declared_TYPE);
+        printf("\n");
+      break;
+
+      case A_PROGRAM :  
+        printf("A_PROGRAM \n");
+        ASTprint(level+1, p->S1);
+        ASTprint(level+1, p->S2);
+      break;
+
+      case A_PACKAGE :  
+        printf("A_PACKAGE %s \n", p->name);
+        ASTprint(level+1, p->S1);
+        ASTprint(level+1, p->S2);
+      break;
+
+      // case A_PACKAGE :  
+      //   printf("A_PACKAGE %s \n", p->name);
+      //   ASTprint(level+1, p->S1);
+      //   ASTprint(level+1, p->S2);
+      // break;
+
 
       default: 
         printf("unknown type in ASTprint\n");

@@ -42,12 +42,12 @@
 #include <stdio.h>
 #include <ctype.h>
 #include "ast.h"
-
-
+#define DEBUG
 
 // Added this to supress warn
 extern int yylex(void);
 extern int line_num; //counts lines (FROM LEX)
+
 
 // ast global
 struct ASTnodetype *PROGRAM;
@@ -105,7 +105,8 @@ void yyerror (s)
 %token T_RIGHTSHIFT 
 
 //===============TYPES LIST
-%type <astnode> Externs ExternDefn
+%type <astnode> Externs ExternDefn ExternParmList FullExternParmList FieldDecl FieldDecls
+%type <asttype> MethodType Type ExternType Constant
 
 %start program
 %union
@@ -113,12 +114,18 @@ void yyerror (s)
   int value;
   char* string;
   struct ASTnodetype *astnode; //keeps track of our nodes
+  enum AST_Decaf_Types asttype;
 }
 
 %%  /* end specs, begin rules */
 program             : Externs T_PACKAGE T_ID '{' FieldDecls MethodDecls '}' 
                     { 
-                        PROGRAM = $1;
+                        PROGRAM = ASTCreateNode(A_PROGRAM);
+                        PROGRAM->S1 = $1;
+                        PROGRAM->S2 = ASTCreateNode(A_PACKAGE);
+                        PROGRAM->S2->name = $3;
+                        PROGRAM->S2->S1 = $5; //field $5
+                        PROGRAM->S2->S2 = NULL; //method
                     }
                   ;
         
@@ -135,31 +142,73 @@ Externs             : /*empty*/
 ExternDefn          : T_EXTERN T_FUNC T_ID '(' ExternParmList ')' MethodType ';' 
                       { 
                         $$ = ASTCreateNode( A_EXTERN );
-                        $$-> name = $3;
+                        $$->name = $3;
+                        $$->A_Declared_TYPE = $7;
+                        $$->S1 = $5;
                       }
                     ;
 
-ExternParmList      : /*empty*/
-                    | FullExternParmList ;
+ExternParmList      : /*empty*/ {$$ = NULL;}
+                    | FullExternParmList {$$ = $1;}
+                    ;
 
-FullExternParmList  : ExternType
-                    | ExternType ',' ExternParmList ;
+FullExternParmList  : ExternType 
+                      {
+                        $$ = ASTCreateNode( A_EXTERN_TYPE );
+                        $$->A_Declared_TYPE = $1;
+                      }
+                    | ExternType ',' ExternParmList 
+                      {
+                        $$ = ASTCreateNode( A_EXTERN_TYPE );
+                        $$->A_Declared_TYPE = $1;
+                        $$->next = $3;
+                      } 
+                    ;
 
-FieldDecls          : /*empty*/
-                    | FieldDecl FieldDecls;
+FieldDecls          : /*empty*/ 
+                      {$$ = NULL;}
+                    | FieldDecl FieldDecls
+                      {
+                        $$ = $1;
+                        $$->next = $2;
+                      }
+                    ;
         
-FieldDecl           : T_VAR T_ID Type ';' ;
-        
-FieldDecl           : T_VAR T_ID ArrayType ';' ;
-        
-FieldDecl           : T_VAR T_ID Type  T_ASSIGN Constant ';' ;
+FieldDecl           : T_VAR T_ID Type ';' 
+                      {
+                        $$ = ASTCreateNode( A_VARDEC );
+                        $$->name = $2;
+                        $$->A_Declared_TYPE = $3;
+                      }
+                    | T_VAR T_ID ArrayType ';' 
+                      {
+                        $$ = ASTCreateNode( A_VARDEC );
+                        $$->name = $2;
+                        //$$->A_Declared_TYPE = $3;
+                        //fix for arr
+                      }
+                    | T_VAR T_ID Type T_ASSIGN Constant ';'
+                      {
+                        $$ = ASTCreateNode( A_VARDEC );
+                        $$->name = $2;
+                        $$->A_Declared_TYPE = $3;
+                        $$->value = $5;
+                      }  
+                    ;
         
 MethodDecls         : /*empty*/
-                    | MethodDecl MethodDecls ;
+                      //{$$ = NULL;}
+                    | MethodDecl MethodDecls
+                      //{
+                      //  $$ = $1;
+                      //  $$->next = $2;
+                      //}
+                    ;
         
 MethodDecl          : T_FUNC T_ID '(' MethodParmList ')' MethodType Block ;
 
 MethodParmList      : /*empty*/
+                      //{$$ = NULL;}
                     | FullMethodParmList ;
 
 FullMethodParmList  : T_ID Type
@@ -168,12 +217,14 @@ FullMethodParmList  : T_ID Type
 Block               : '{' VarDecls Statements '}' ;
         
 VarDecls            : /*empty*/
+                      //{$$ = NULL;}
                     | VarDecl VarDecls ;
         
 VarDecl             : T_VAR T_ID Type ';'
                     | T_VAR T_ID ArrayType ';' ;
         
 Statements          : /*empty*/
+                      //{$$ = NULL;}
                     | Statement Statements;
         
 Statement           : Block ;
@@ -190,6 +241,7 @@ Statement           : MethodCall ';' ;
 MethodCall          : T_ID '(' MethodCallList ')' ;
 
 MethodCallList      : /*empty*/
+                      //{$$ = NULL;}
                     | FullMethodCallList ;
 
 FullMethodCallList  : MethodArg
@@ -246,22 +298,24 @@ Factor              : Lvalue
                     | '!' Factor
                     | '-' Factor ;
 
-ExternType          : T_STRINGTYPE 
+ExternType          : T_STRINGTYPE {$$ = A_Decaf_STRING;}
                     | Type ;
 
-Type                 : T_INTTYPE
-                     | T_BOOLTYPE ;
+Type                 : T_INTTYPE {$$ = A_Decaf_INT;}
+                     | T_BOOLTYPE {$$ = A_Decaf_BOOL;} 
+                     ;
 
-MethodType           : T_VOID
-                     | Type ;
+MethodType           : T_VOID 
+                      {$$ = A_Decaf_VOID;}
+                     | Type {$$ = $1;};
 
-BoolConstant         : T_TRUE
-                     | T_FALSE ;
+BoolConstant         : T_TRUE {$$ = 1;}
+                     | T_FALSE {$$ = 0;};
 
 ArrayType            : '[' T_INTCONSTANT ']' Type ;
 
-Constant             : T_INTCONSTANT 
-                     | BoolConstant ;
+Constant             : T_INTCONSTANT {$$ = $1;}
+                     | BoolConstant {$$ = $1;} ;
 
 %%  /* end of rules, start of program */
 
