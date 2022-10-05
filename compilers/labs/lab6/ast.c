@@ -29,11 +29,97 @@
 ASTnode *ASTCreateNode(enum AST_Tree_Element_Type mytype)
 {
   ASTnode *p;
+
   if (mydebug)
   {
-    fprintf(stderr,"Creating AST Node \n");
-  }
+    fprintf(stderr,"Creating AST Node with type = ");
+    switch (mytype) {
+      case A_PACKAGE: 
+        printf("A_PACKAGE");
+      break;
+      
+      case A_METHODDEC: 
+        printf("A_METHODDEC");
+      break;
+      
+      case A_NUMBER: 
+        printf("A_NUMBER");
+      break;
+      
+      case A_WHILESTMT: 
+        printf("A_WHILESTMT");
+      break;
+      
+      case A_BLOCK: 
+        printf("A_BLOCK");
+      break;
+      
+      case A_EXPR: 
+        printf("A_EXPR");
+      break;
+      
+      case A_PARAM: 
+        printf("A_PARAM");
+      break;
+      
+      case A_VARDEC: 
+        printf("A_VARDEC");
+      break;
+      
+      case A_EXTERN: 
+        printf("A_EXTERN");
+      break;
+      
+      case A_EXTERN_TYPE: 
+        printf("A_EXTERN_TYPE");
+      break;
+      
+      case A_PROGRAM: 
+        printf("A_PROGRAM");
+      break;
+      
+      case A_ARRAY_TYPE: 
+        printf("A_ARRAY_TYPE");
+      break;
+      
+      case A_METHOD_ID: 
+        printf("A_METHOD_ID");
+      break;
+      
+      case A_CONSTANT_INT: 
+        printf("A_CONSTANT_INT");
+      break;
+      
+      case A_CONSTANT_STRING: 
+        printf("A_CONSTANT_STRING");
+      break;
+      
+      case A_CONSTANT_BOOL: 
+        printf("A_CONSTANT_BOOL");
+      break;
+      
+      case A_BREAK: 
+        printf("A_BREAK");
+      break;
+      
+      case A_CONTINUE: 
+        printf("A_CONTINUE");
+      break;
+      
+      case A_RETURN: 
+        printf("A_RETURN");
+      break;
+      
+      case A_VAR_RVAL: 
+        printf("A_VAR_RVAL");
+      break;
 
+      default :
+        printf("A_UNKOWN");
+      break;
+    }
+    printf("\n");
+  }
   // get head data
   p        = (ASTnode *)malloc(sizeof(ASTnode)); 
 
@@ -70,14 +156,9 @@ void AST_Print_Type( enum AST_Decaf_Types t)
       printf(" BOOL ");
     break;
 
-    // case A_Decaf_VOID : 
-    //   printf(" VOID ");
-    // break; //in video Dr. Cooper said no void. 
-    
-    // case A_Decaf_VOID : 
-    //   printf(" VOID ");
-    // break; //in video Dr. Cooper said no void. 
-
+    case A_Decaf_VOID : 
+      printf(" VOID ");
+    break; //in video Dr. Cooper said no void. 
 
     case A_Decaf_STRING : 
       printf(" STRING ");
@@ -91,6 +172,18 @@ void AST_Print_Type( enum AST_Decaf_Types t)
 
 }// of AST_Print_Type
 
+// Will print a node p
+void P_Print( ASTnode *p){
+  
+  printf("P_Print p->type = %d", p->type);
+  printf("\n");
+  
+  if(p->value != 0)
+    printf("P_Print p->value = %d", p->value);
+  if(p->name != NULL)
+    printf("P_Print p->name = %s", p->name);
+
+}
 
 /*  Print out the abstract syntax tree */
 void ASTprint(int level,ASTnode *p)
@@ -111,50 +204,39 @@ void ASTprint(int level,ASTnode *p)
         //   printf("VOID ");
         // }
         printf(" %s",p->name);
+        if (p->S1 != NULL)
+        {
+          printf("[%d]",p->S1->value);
+        } 
         AST_Print_Type(p->A_Declared_TYPE);
-        printf(" = %d ", p-> value);
-        // if (p->value > 0)
-        // {
-        //   printf("[%d]",p->value);
-        // }
+        // this is a intitial value set
+        if( p->S2 != NULL ) {
+          printf(" = %d ", p->S2->value);
+        }
+        
         printf("\n");
-        ASTprint(level,p->S1);
       break;
 
       case A_METHODDEC :  
-        if (p->operator == A_Decaf_INT)
-        {
-          printf("INT ");
-        }
-
-        if (p->operator == A_Decaf_VOID)
-        {
-          printf("VOID ");
-        }
-
-        if (p->operator == A_Decaf_BOOL)
-        {
-          printf("BOOLEAN ");
-        }
-
-        printf("FUNCTION %s \n",p->name);
+        printf(" Method %s with type  " ,p->name);
+        AST_Print_Type(p->A_Declared_TYPE);
         /* print out the parameter list */
         if (p->S1 == NULL ) 
         { 
           PT(level+2); 
-          printf (" (VOID) ");
+          printf (" (NONE) ");
         }
 
         else
         { 
-          PT(level+2);
+          PT(level+3);
           printf( "( \n");
-          ASTprint(level+2, p->S1);
-          PT(level+2);
+          ASTprint(level+6, p->S1);
+          PT(level+3);
           printf( ") ");
         }
         printf("\n");
-        ASTprint(level+2, p->S2); // print out the block
+        ASTprint(level+3, p->S2); // print out the block
       break;
 
       case A_PARAM :  
@@ -201,7 +283,7 @@ void ASTprint(int level,ASTnode *p)
       break;
 
       case A_BLOCK :  
-        printf("BLOCK STATEMENT  \n",p->name);
+        printf("BLOCK STATEMENT \n");
         ASTprint(level+1, p->S1);
         ASTprint(level+1, p->S2);
       break;
@@ -214,17 +296,38 @@ void ASTprint(int level,ASTnode *p)
 
       case A_NUMBER :  
         printf("NUMBER with value %d\n",p->value);
-        ASTprint(level+1, p->S1);
+      break;
+
+      case A_CONSTANT_INT :
+        printf("CONSTANT_INT with value %d\n",p->value);
+      break;
+
+      case A_CONSTANT_STRING :
+        printf("CONSTANT_STRING with value TODO\n");
+        // fails with p->name
+      break;
+
+      case A_CONSTANT_BOOL :
+        printf("CONSTANT_BOOL with value ");
+        if (p->value == 1)
+        {
+          printf("FALSE");
+        } 
+        else  
+        {
+          printf("FALSE");
+        }
+        printf("\n");
       break;
 
       case A_EXTERN_TYPE :  
-        printf("A_EXTERN_TYPE ");
+        printf("EXTERN_TYPE ");
         AST_Print_Type(p->A_Declared_TYPE);
         ASTprint(level+1, p->S1);
       break;
 
       case A_EXTERN :  
-        printf("A_EXTERN %s (", p->name);
+        printf("EXTERN %s (", p->name);
         ASTprint(level+1, p->S1);
         printf(" )");
         AST_Print_Type(p->A_Declared_TYPE);
@@ -232,28 +335,42 @@ void ASTprint(int level,ASTnode *p)
       break;
 
       case A_PROGRAM :  
-        printf("A_PROGRAM \n");
+        printf("PROGRAM \n");
         ASTprint(level+1, p->S1);
         ASTprint(level+1, p->S2);
       break;
 
       case A_PACKAGE :  
-        printf("A_PACKAGE %s \n", p->name);
+        printf("PACKAGE %s \n", p->name);
         ASTprint(level+1, p->S1);
         ASTprint(level+1, p->S2);
       break;
 
-      // case A_PACKAGE :  
-      //   printf("A_PACKAGE %s \n", p->name);
-      //   ASTprint(level+1, p->S1);
-      //   ASTprint(level+1, p->S2);
-      // break;
+      case A_METHOD_ID :  
+        printf("METHOD Variable %s ", p->name);
+        AST_Print_Type(p->A_Declared_TYPE);
+        printf("\n");
+      break;
 
+      case A_BREAK :  
+        printf("BREAK statement \n");
+      break;
+
+      case A_CONTINUE :  
+        printf("CONTINUE statement \n");
+      break;
+
+      case A_RETURN :  
+        printf("RETURN statement \n");
+        ASTprint(level+1, p->S1);
+      break;
 
       default: 
         printf("unknown type in ASTprint\n");
+        P_Print(p);
       break;
     }
     ASTprint(level, p->next);
   }
+
 }

@@ -11,7 +11,7 @@
 
 #ifndef AST_H
 #define AST_H
-static int mydebug;
+static int mydebug = 1;
 
 /* define the enumerated types for the AST.  THis is used to tell us what 
 sort of production rule we came across */
@@ -27,8 +27,20 @@ enum AST_Tree_Element_Type {
    A_VARDEC,
    A_EXTERN,
    A_EXTERN_TYPE,
-   A_PROGRAM
-      //missing
+   A_PROGRAM,
+   A_ARRAY_TYPE,
+   A_METHOD_ID,
+   A_CONSTANT_INT,
+   A_CONSTANT_STRING,
+   A_CONSTANT_BOOL,
+   A_BREAK,
+   A_CONTINUE,
+   A_RETURN,
+   A_VAR_RVAL,
+   A_METHOD_CALL,
+   A_METHOD_CALL_LIST
+      //missing, 
+
 };
 
 
@@ -36,7 +48,20 @@ enum AST_Operators {
    A_PLUS,
    A_MINUS,
    A_TIMES,
-   A_NOT
+   A_MOD,
+   A_DIV,
+   A_AND,
+   A_OR,
+   A_LS,
+   A_RS,
+   A_NOT,
+   A_UMINUS,
+   A_LEQ,
+   A_GT ,
+   A_LT ,
+   A_GEQ,
+   A_EQ ,
+   A_NEQ
       //missing
 };
 
@@ -72,5 +97,8 @@ ASTnode *program;  // Global Pointer for connection between YACC and backend
 
 /*  Print out the abstract syntax tree */
 void ASTprint(int level,ASTnode *p); // prints tree with level horizontal spaceing
+
+// Will print a node p
+void P_Print( ASTnode *p);
 
 #endif // of AST_H

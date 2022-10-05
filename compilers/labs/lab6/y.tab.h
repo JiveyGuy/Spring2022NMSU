@@ -126,14 +126,15 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 113 "lab6.y" /* yacc.c:1909  */
+#line 121 "lab6.y" /* yacc.c:1909  */
 
   int value;
   char* string;
   struct ASTnodetype *astnode; //keeps track of our nodes
   enum AST_Decaf_Types asttype;
+  enum AST_Operators operator;
 
-#line 137 "y.tab.h" /* yacc.c:1909  */
+#line 138 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

@@ -48,7 +48,6 @@
 extern int yylex(void);
 extern int line_num; //counts lines (FROM LEX)
 
-
 // ast global
 struct ASTnodetype *PROGRAM;
 
@@ -105,8 +104,17 @@ void yyerror (s)
 %token T_RIGHTSHIFT 
 
 //===============TYPES LIST
-%type <astnode> Externs ExternDefn ExternParmList FullExternParmList FieldDecl FieldDecls
-%type <asttype> MethodType Type ExternType Constant
+%type <astnode> Externs ExternDefn ExternParmList FieldDecl MethodDecls
+%type <astnode> ArrayType FullExternParmList FieldDecls MethodDecl
+%type <astnode> MethodParmList FullMethodParmList Block VarDecls VarDecl
+%type <astnode> BoolConstant Constant BreakStatement ContinueStatement
+%type <astnode> Statement Statements ReturnStatement Lvalue MethodCall
+%type <astnode> Expr Additiveexpression Term Factor MethodCallList
+%type <astnode> FullMethodCallList
+
+%type <asttype> MethodType Type ExternType
+
+%type <operator> Relop Multop Addop
 
 %start program
 %union
@@ -115,6 +123,7 @@ void yyerror (s)
   char* string;
   struct ASTnodetype *astnode; //keeps track of our nodes
   enum AST_Decaf_Types asttype;
+  enum AST_Operators operator;
 }
 
 %%  /* end specs, begin rules */
@@ -125,7 +134,7 @@ program             : Externs T_PACKAGE T_ID '{' FieldDecls MethodDecls '}'
                         PROGRAM->S2 = ASTCreateNode(A_PACKAGE);
                         PROGRAM->S2->name = $3;
                         PROGRAM->S2->S1 = $5; //field $5
-                        PROGRAM->S2->S2 = NULL; //method
+                        PROGRAM->S2->S2 = $6; //method
                     }
                   ;
         
@@ -184,122 +193,249 @@ FieldDecl           : T_VAR T_ID Type ';'
                       {
                         $$ = ASTCreateNode( A_VARDEC );
                         $$->name = $2;
-                        //$$->A_Declared_TYPE = $3;
-                        //fix for arr
+                        $$->S1 = $3;
+                        $$->A_Declared_TYPE = $3->A_Declared_TYPE;
                       }
                     | T_VAR T_ID Type T_ASSIGN Constant ';'
                       {
                         $$ = ASTCreateNode( A_VARDEC );
                         $$->name = $2;
                         $$->A_Declared_TYPE = $3;
-                        $$->value = $5;
+                        $$->S2 = $5;
                       }  
                     ;
         
 MethodDecls         : /*empty*/
-                      //{$$ = NULL;}
+                      {$$ = NULL;}
                     | MethodDecl MethodDecls
-                      //{
-                      //  $$ = $1;
-                      //  $$->next = $2;
-                      //}
+                      {
+                        $$ = $1;
+                        $$->next = $2;
+                      }
                     ;
         
-MethodDecl          : T_FUNC T_ID '(' MethodParmList ')' MethodType Block ;
+MethodDecl          : T_FUNC T_ID '(' MethodParmList ')' MethodType Block 
+                      {
+                        $$ = ASTCreateNode( A_METHODDEC );
+                        $$->name = $2;
+                        $$->A_Declared_TYPE = $6;
+                        $$->S1   = $4;
+                        $$->S2   = $7; // $7
+                      }
+                    ;
 
 MethodParmList      : /*empty*/
-                      //{$$ = NULL;}
-                    | FullMethodParmList ;
+                      {$$ = NULL;}
+                    | FullMethodParmList
+                      {
+                        $$ = $1;
+                      }
+                    ;
 
 FullMethodParmList  : T_ID Type
-                    | T_ID Type ',' FullMethodParmList ;
+                      {
+                        $$ = ASTCreateNode( A_METHOD_ID );
+                        $$->name = $1;
+                        $$->A_Declared_TYPE = $2;
+                      }
+                    | T_ID Type ',' FullMethodParmList 
+                      {
+                        $$ = ASTCreateNode( A_METHOD_ID );
+                        $$->name = $1;
+                        $$->A_Declared_TYPE = $2;
+                        $$->next = $4;
+                      }
+                    ;
         
-Block               : '{' VarDecls Statements '}' ;
+Block               : '{' VarDecls Statements '}' 
+                      {
+                        $$ = ASTCreateNode( A_BLOCK );
+                        $$->S1 = $2;
+                        $$->S2 = $3;
+                      }
+                    ;
         
 VarDecls            : /*empty*/
-                      //{$$ = NULL;}
-                    | VarDecl VarDecls ;
+                      {$$ = NULL;}
+                    | VarDecl VarDecls 
+                      {
+                        $$ = $1;
+                        $$->next = $2;
+                      }
+                    ;
         
 VarDecl             : T_VAR T_ID Type ';'
-                    | T_VAR T_ID ArrayType ';' ;
+                      {
+                        $$ = ASTCreateNode( A_VARDEC );
+                        $$->name = $2;
+                        $$->A_Declared_TYPE = $3;
+                      }
+                    | T_VAR T_ID ArrayType ';' 
+                      {
+                        $$ = ASTCreateNode( A_VARDEC );
+                        $$->name = $2;
+                        $$->S1 = $3;
+                        $$->A_Declared_TYPE = $3->A_Declared_TYPE;
+                      }
+                      ;
         
 Statements          : /*empty*/
-                      //{$$ = NULL;}
-                    | Statement Statements;
+                      {$$ = NULL;}
+                    | Statement Statements
+                      {
+                        $$ = $1;
+                        $$->next = $2;
+                      }
+                    ;
         
-Statement           : Block ;
-        
-Statement           : Assign ';' ;
+Statement           : Block             {$$ = $1;}
+                    | MethodCall ';'    {$$ = NULL;}
+                    | Assign ';'        {$$ = NULL;} 
+                    | IfStatement       {$$ = NULL;} 
+                    | BreakStatement    {$$ = $1;} 
+                    | WhileStatement    {$$ = NULL;} 
+                    | ReturnStatement   {$$ = $1;} 
+                    | ContinueStatement {$$ = $1;} 
+                    ;
+
+IfStatement         : T_IF '(' Expr ')' Block T_ELSE Block
+                    | T_IF '(' Expr  ')' Block ;
+
+BreakStatement      : T_BREAK ';' 
+                      {
+                        $$ = ASTCreateNode( A_BREAK );
+                      } 
+                     ;
+
+WhileStatement      : T_WHILE '(' Expr ')' Block ;
+
+ReturnStatement      : T_RETURN ';'
+                      {
+                        $$ = ASTCreateNode( A_RETURN );
+                      } 
+                     | T_RETURN '(' ')' ';'
+                      {
+                        $$ = ASTCreateNode( A_RETURN );
+                      } 
+                     | T_RETURN '(' Expr ')' ';' 
+                      {
+                        $$ = ASTCreateNode( A_RETURN );
+                        $$->S1 = $3;
+                      }
+                     ;
+
+ContinueStatement    : T_CONTINUE ';' 
+                      {
+                        $$ = ASTCreateNode( A_CONTINUE );
+                      } 
+                    ;
         
 Assign              : Lvalue T_ASSIGN Expr ; 
         
-Lvalue              : T_ID
-                    | T_ID '[' Expr ']' ;
-        
-Statement           : MethodCall ';' ;
-        
-MethodCall          : T_ID '(' MethodCallList ')' ;
+Lvalue              : T_ID 
+                      {
+                        $$ = ASTCreateNode( A_VAR_RVAL );
+                        $$->name = $1;
+                      }
+                    | T_ID '[' Expr ']'
+                      {
+                        $$ = ASTCreateNode( A_VAR_RVAL );
+                        $$->name = $1;
+                        $$->S1   = $3;
+                      } 
+                    ;
+            
+MethodCall          : T_ID '(' MethodCallList ')'
+                      {
+                        $$ = ASTCreateNode( A_METHOD_CALL );
+                        $$->name = $1;
+                        $$->S1 = $3;
+                      } 
+                    ;
 
 MethodCallList      : /*empty*/
-                      //{$$ = NULL;}
-                    | FullMethodCallList ;
+                     {$$ = NULL;}
+                    | FullMethodCallList {$$ = $1;} ;
 
-FullMethodCallList  : MethodArg
-                    | MethodArg ',' FullMethodCallList ;
-        
-MethodArg           : Expr
-                    | T_STRINGCONSTANT ;
-        
-Statement           : T_IF '(' Expr ')' Block T_ELSE Block;
+FullMethodCallList  : Expr {$$ = $1;}
+                    | Expr ',' Expr 
+                      {
+                        $$ = ASTCreateNode( A_EXPR );
+                        $$->S1 = $1;
+                        $$->S1 = $3;
+                      }
+                    ;
 
-Statement           : T_IF '(' Expr  ')' Block;
+Expr                : Additiveexpression {$$ = $1;}
+                    | Expr Relop Additiveexpression 
+                      {
+                        $$ = ASTCreateNode( A_EXPR );
+                        $$->S1 = $1;
+                        $$->operator = $2;
+                        $$->S2 = $3;
+                      }
+                    ;
 
-Statement           : T_WHILE '(' Expr ')' Block ;
-        
-Statement            : T_RETURN ';' ;
-                     | T_RETURN '(' ')' ';' ;
-                     | T_RETURN '(' Expr ')' ';' ;
-        
-Statement           : T_BREAK ';' ;
-        
-Statement           : T_CONTINUE ';' ;
+Relop               : T_LEQ   {$$ = A_LEQ;}
+                    | T_GT    {$$ = A_GT ;}
+                    | T_LT    {$$ = A_LT ;}
+                    | T_GEQ   {$$ = A_GEQ;}
+                    | T_EQ    {$$ = A_EQ ;}
+                    | T_NEQ   {$$ = A_NEQ;}
+                    ;
 
-Expr                : Additiveexpression
-                    | Expr Relop Additiveexpression ;
+Additiveexpression  : Term {$$ = $1;}
+                    | Additiveexpression Addop Term
+                      {
+                        $$ = ASTCreateNode( A_EXPR );
+                        $$->S1 = $1;
+                        $$->operator = $2;
+                        $$->S2 = $3;
+                      }
+                    ;
 
-Relop               : T_LEQ
-                    | T_GT
-                    | T_LT
-                    | T_GEQ
-                    | T_EQ
-                    | T_NEQ ;
+Addop               : '+' {$$ = A_PLUS;  }
+                    | '-' {$$ = A_MINUS; } ;
 
-Additiveexpression  : Term
-                    | Additiveexpression Addop Term;
+Term                : Factor {$$ = $1;}
+                    | Term Multop Factor
+                      {
+                        $$ = ASTCreateNode( A_EXPR );
+                        $$->S1 = $1;
+                        $$->operator = $2;
+                        $$->S2 = $3;
+                      }
+                    ;
 
-Addop               : '+'
-                    | '-' ;
-
-Term                : Factor
-                    | Term Multop Factor;
-
-Multop              : '*'
-                    | '/'
-                    | '%' 
-                    | T_AND
-                    | T_OR
-                    | T_LEFTSHIFT
-                    | T_RIGHTSHIFT ;
+Multop              : '*'           {$$ = A_TIMES;}
+                    | '/'           {$$ = A_DIV;}
+                    | '%'           {$$ = A_MOD;}
+                    | T_AND         {$$ = A_AND;}
+                    | T_OR          {$$ = A_OR;}
+                    | T_LEFTSHIFT   {$$ = A_LS;}
+                    | T_RIGHTSHIFT  {$$ = A_RS;}
+                    ;
 
 Factor              : Lvalue
                     | MethodCall
-                    | Constant
-                    | '(' Expr ')'
-                    | '!' Factor
-                    | '-' Factor ;
+                    | Constant {$$ = $1;}
+                    | '(' Expr ')' {$$ = $2;}
+                    | '!' Factor 
+                      {
+                        $$ = ASTCreateNode( A_EXPR );
+                        $$->operator = A_NOT;
+                        $$->S1 = $2;
+                      }
+                    | '-' Factor
+                      {
+                        $$ = ASTCreateNode( A_UMINUS );
+                        $$->operator = A_NOT;
+                        $$->S1 = $2;
+                      }
+
 
 ExternType          : T_STRINGTYPE {$$ = A_Decaf_STRING;}
-                    | Type ;
+                    | Type {$$ = $1;} ;
 
 Type                 : T_INTTYPE {$$ = A_Decaf_INT;}
                      | T_BOOLTYPE {$$ = A_Decaf_BOOL;} 
@@ -309,12 +445,35 @@ MethodType           : T_VOID
                       {$$ = A_Decaf_VOID;}
                      | Type {$$ = $1;};
 
-BoolConstant         : T_TRUE {$$ = 1;}
-                     | T_FALSE {$$ = 0;};
+BoolConstant         : T_TRUE
+                      {
+                        $$ = ASTCreateNode( A_CONSTANT_BOOL );
+                        $$->value = 1;
+                      }
+                     | T_FALSE 
+                      {
+                        $$ = ASTCreateNode( A_CONSTANT_BOOL );
+                        $$->value = 0;
+                      }
 
-ArrayType            : '[' T_INTCONSTANT ']' Type ;
+ArrayType            : '[' T_INTCONSTANT ']' Type 
+                      {
+                        $$ = ASTCreateNode( A_ARRAY_TYPE );
+                        $$->value = $2;
+                        $$->A_Declared_TYPE = $4;
+                      }
+                     ;
 
-Constant             : T_INTCONSTANT {$$ = $1;}
+Constant             : T_INTCONSTANT 
+                      {
+                        $$ = ASTCreateNode( A_CONSTANT_INT );
+                        $$->value = $1;
+                      }
+                     | T_STRINGCONSTANT 
+                      {
+                        $$ = ASTCreateNode( A_CONSTANT_STRING );
+                        $$->name = $1;
+                      }
                      | BoolConstant {$$ = $1;} ;
 
 %%  /* end of rules, start of program */

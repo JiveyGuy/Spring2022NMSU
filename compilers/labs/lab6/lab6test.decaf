@@ -6,5 +6,18 @@ package foo {
   var y_me int = 10;
   var A[100] bool;
 
-  
+  func main (b int, y bool) void
+  {
+    var x int;
+    var B[100] int;
+    break;
+    continue;
+    return;
+    return ();
+    return (5);
+    return (true);
+    return (false);
+    return ("yes");
+
+  }
 } //end of foo
