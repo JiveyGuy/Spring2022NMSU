@@ -445,6 +445,15 @@ void ASTprint(int level,ASTnode *p)
         ASTprint(level+1, p->S2);
       break;
 
+      case A_VAR_RVAL:
+        printf("Variable %s [\n", p->name);
+        if (p->S1 != NULL) 
+        {
+                ASTprint(level+2, p->S1);
+                printf("]\n");
+        }
+      break;
+
       case A_METHOD_ID :  
         printf("METHOD Variable %s ", p->name);
         AST_Print_Type(p->A_Declared_TYPE);

@@ -319,7 +319,6 @@ IfStatement         : T_IF '(' Expr ')' Block T_ELSE Block
                       $$->S1 = $3;
                       $$->S2 = ASTCreateNode( A_IF_BLOCK );
                       $$->S2->S1 = $5;
-                      $$->S2->S2 = NULL;
                     } 
                     ;
 
@@ -399,7 +398,7 @@ FullMethodCallList  : Expr {$$ = $1;}
                       {
                         $$ = ASTCreateNode( A_EXPR );
                         $$->S1 = $1;
-                        $$->S1 = $3;
+                        $$->S2 = $3;
                       }
                     ;
 
@@ -425,9 +424,9 @@ Additiveexpression  : Term {$$ = $1;}
                     | Additiveexpression Addop Term
                       {
                         $$ = ASTCreateNode( A_EXPR );
-                        #ifdef DEBUG
-                          printf("Making expr with S1 = %d opp = %s S2 = %d", $1, $2, $3);
-                        #endif
+                        //#ifdef DEBUG
+                        //  printf("Making expr with S1 = %d opp = %s S2 = %d", $1, $2, $3);
+                        //#endif
                         $$->S1 = $1;
                         $$->operator = $2;
                         $$->S2 = $3;
@@ -456,8 +455,8 @@ Multop              : '*'           {$$ = A_TIMES;}
                     | T_RIGHTSHIFT  {$$ = A_RS;}
                     ;
 
-Factor              : Lvalue
-                    | MethodCall
+Factor              : Lvalue {$$ = $1;}
+                    | MethodCall {$$ = $1;}
                     | Constant {$$ = $1;}
                     | '(' Expr ')' {$$ = $2;}
                     | '!' Factor 
