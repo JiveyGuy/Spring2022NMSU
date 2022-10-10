@@ -11,7 +11,7 @@
 
 #ifndef AST_H
 #define AST_H
-static int mydebug = 1;
+static int mydebug = 0;
 
 /* define the enumerated types for the AST.  THis is used to tell us what 
 sort of production rule we came across */
@@ -40,7 +40,9 @@ enum AST_Tree_Element_Type {
    A_VAR_RVAL,
    A_METHOD_CALL,
    A_METHOD_CALL_LIST,
-   A_ASSIGN
+   A_ASSIGN, 
+   A_ELSE,
+   A_IF_BLOCK
       //missing, 
 
 };

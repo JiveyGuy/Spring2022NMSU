@@ -604,7 +604,7 @@ output: tokens
     #include "ast.h"
     #include "y.tab.h"
     int line_num = 1;
-    int DEBUG = 1; //Change 0 before submit
+    int DEBUG = 0; //Change 0 before submit
     int hex_to_int(char * hex_input);
 #line 609 "lex.yy.c"
 #line 610 "lex.yy.c"

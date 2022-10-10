@@ -42,10 +42,11 @@
 #include <stdio.h>
 #include <ctype.h>
 #include "ast.h"
-#define DEBUG
+//#define DEBUG
 
 // Added this to supress warn
 extern int yylex(void);
+void debug(char s[]);
 extern int line_num; //counts lines (FROM LEX)
 
 // ast global
@@ -301,19 +302,24 @@ Statement           : Block             {$$ = $1;}
 IfStatement         : T_IF '(' Expr ')' Block T_ELSE Block
                     { 
                       $$ = ASTCreateNode( A_IFSTMT );
-                      $$->S1 = ASTCreateNode( A_IFSTMT );
-                      $$->S1->S1 = $3;
-                      $$->S1->S2 = $5;
-                      $$->S2 = ASTCreateNode( A_IFSTMT );
-                      $$->S2->S1 = ($3 == 0) ? 1 : 0;
-                      $$->S2->S2 = $7;
+
+                      $$->S1 = $3;
+                      debug("$$->S1 line");
+                      $$->S2 = ASTCreateNode( A_IF_BLOCK );
+                      debug("$$->S2->S1 line");
+                      $$->S2->S1 = $5;
+                      $$->S2->S2 = ASTCreateNode( A_ELSE );
+                      $$->S2->S2->S1 = $7;
+
                     } 
 
                     | T_IF '(' Expr ')' Block 
                     { 
                       $$ = ASTCreateNode( A_IFSTMT );
                       $$->S1 = $3;
-                      $$->S2 = $5;
+                      $$->S2 = ASTCreateNode( A_IF_BLOCK );
+                      $$->S2->S1 = $5;
+                      $$->S2->S2 = NULL;
                     } 
                     ;
 
@@ -355,6 +361,9 @@ ContinueStatement    : T_CONTINUE ';'
 Assign              : Lvalue T_ASSIGN Expr 
                       {
                         $$ = ASTCreateNode( A_ASSIGN );
+                        //#ifdef DEBUG   
+                        //  printf("Assign made with S1 = %s, S2 = %s",$1,$3);
+                        //#endif
                         $$->S1 = $1;
                         $$->S2 = $3;
                       }
@@ -416,6 +425,9 @@ Additiveexpression  : Term {$$ = $1;}
                     | Additiveexpression Addop Term
                       {
                         $$ = ASTCreateNode( A_EXPR );
+                        #ifdef DEBUG
+                          printf("Making expr with S1 = %d opp = %s S2 = %d", $1, $2, $3);
+                        #endif
                         $$->S1 = $1;
                         $$->operator = $2;
                         $$->S2 = $3;

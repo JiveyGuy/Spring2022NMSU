@@ -43,7 +43,7 @@ output: tokens
     #include "ast.h"
     #include "y.tab.h"
     int line_num = 1;
-    int DEBUG = 1; //Change 0 before submit
+    int DEBUG = 0; //Change 0 before submit
     int hex_to_int(char * hex_input);
 %}
 

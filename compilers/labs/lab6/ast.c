@@ -206,6 +206,8 @@ void P_Print( ASTnode *p){
 }
 
 /*  Print out the abstract syntax tree */
+// pre cond: given int level and node p 
+//  post cond: print the node p indented to level level
 void ASTprint(int level,ASTnode *p)
 {
   int i;
@@ -386,8 +388,8 @@ void ASTprint(int level,ASTnode *p)
       break;
 
       case A_CONSTANT_STRING :
-        printf("CONSTANT_STRING with value TODO\n");
-        // fails with p->name
+        printf("CONSTANT_STRING with value %s\n", p->name);
+        // fails with p->name ?????
       break;
 
       case A_CONSTANT_BOOL :
@@ -403,6 +405,11 @@ void ASTprint(int level,ASTnode *p)
         printf("\n");
       break;
 
+      case A_METHOD_CALL: 
+        printf("A_METHOD_CALL name=%s, args:\n",p->name);
+        ASTprint(level + 1, p->S1);
+      break;
+
       case A_EXTERN_TYPE :  
         printf("EXTERN_TYPE ");
         AST_Print_Type(p->A_Declared_TYPE);
@@ -414,6 +421,15 @@ void ASTprint(int level,ASTnode *p)
         ASTprint(level+1, p->S1);
         printf(" )");
         AST_Print_Type(p->A_Declared_TYPE);
+        printf("\n");
+      break;
+
+      case A_IFSTMT :  
+        printf("IFSTMT\n");
+      case A_IF_BLOCK :
+      case A_ELSE :  
+        ASTprint(level+1, p->S1);
+        ASTprint(level+1, p->S2);
         printf("\n");
       break;
 
@@ -447,6 +463,12 @@ void ASTprint(int level,ASTnode *p)
         printf("RETURN statement \n");
         ASTprint(level+1, p->S1);
       break;
+
+      case A_ASSIGN: 
+        printf("A_ASSIGN STATEMENT\n");
+        ASTprint(level + 1, p->S1);
+        ASTprint(level + 1, p->S2);
+      break; 
 
       default: 
         printf("unknown type in ASTprint\n");
